@@ -56,7 +56,7 @@ function App() {
     if (userSide && currentStep && currentStep.side === userSide) {
       const fetchAi = async () => {
         try {
-          const res = await axios.get(`http://localhost:8000/draft`, {
+          const res = await axios.get(`https://aov-backend-khang.onrender.com/draft`, {
             params: { 
               your_team: (userSide === 'Blue' ? draftData.bluePicks : draftData.redPicks).join(','), 
               enemy_team: (userSide === 'Blue' ? draftData.redPicks : draftData.bluePicks).join(','), 
@@ -83,7 +83,7 @@ function App() {
 
           console.log("Đang gửi đội hình cho AI phân tích..."); // Báo log ra F12
 
-          const response = await axios.get('http://localhost:8000/analyze', {
+          const response = await axios.get('https://aov-backend-khang.onrender.com/analyze', {
             params: { your_team, enemy_team }
           });
           
