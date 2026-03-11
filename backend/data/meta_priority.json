@@ -1,0 +1,524 @@
+{
+  "Toro": {
+    "pick_rate": 39.76,
+    "ban_rate": 18.65,
+    "win_rate": 53.1,
+    "meta_score": 94.28
+  },
+  "Y'bneth": {
+    "pick_rate": 32.72,
+    "ban_rate": 16.89,
+    "win_rate": 48.39,
+    "meta_score": 82.25
+  },
+  "Tachi": {
+    "pick_rate": 29.91,
+    "ban_rate": 15.48,
+    "win_rate": 48.24,
+    "meta_score": 77.25
+  },
+  "Fennik": {
+    "pick_rate": 24.98,
+    "ban_rate": 13.02,
+    "win_rate": 47.89,
+    "meta_score": 68.45
+  },
+  "Hayate": {
+    "pick_rate": 33.78,
+    "ban_rate": 18.3,
+    "win_rate": 45.83,
+    "meta_score": 84.14
+  },
+  "Lorion": {
+    "pick_rate": 28.85,
+    "ban_rate": 15.13,
+    "win_rate": 47.56,
+    "meta_score": 75.33
+  },
+  "Rouie": {
+    "pick_rate": 25.69,
+    "ban_rate": 13.02,
+    "win_rate": 49.32,
+    "meta_score": 69.87
+  },
+  "Skud": {
+    "pick_rate": 22.52,
+    "ban_rate": 12.32,
+    "win_rate": 45.31,
+    "meta_score": 63.65
+  },
+  "Wisp": {
+    "pick_rate": 24.28,
+    "ban_rate": 13.72,
+    "win_rate": 43.48,
+    "meta_score": 66.6
+  },
+  "Enzo": {
+    "pick_rate": 20.41,
+    "ban_rate": 9.85,
+    "win_rate": 51.72,
+    "meta_score": 61.05
+  },
+  "Marja": {
+    "pick_rate": 34.83,
+    "ban_rate": 20.06,
+    "win_rate": 42.42,
+    "meta_score": 86.13
+  },
+  "Zephys": {
+    "pick_rate": 21.46,
+    "ban_rate": 10.56,
+    "win_rate": 50.82,
+    "meta_score": 62.71
+  },
+  "TeeMee": {
+    "pick_rate": 21.11,
+    "ban_rate": 10.2,
+    "win_rate": 51.67,
+    "meta_score": 62.25
+  },
+  "Qi": {
+    "pick_rate": 26.74,
+    "ban_rate": 11.26,
+    "win_rate": 57.89,
+    "meta_score": 72.58
+  },
+  "Eland'orr": {
+    "pick_rate": 28.5,
+    "ban_rate": 14.43,
+    "win_rate": 49.38,
+    "meta_score": 74.83
+  },
+  "Yena": {
+    "pick_rate": 20.76,
+    "ban_rate": 10.56,
+    "win_rate": 49.15,
+    "meta_score": 61.17
+  },
+  "Liliana": {
+    "pick_rate": 17.24,
+    "ban_rate": 7.74,
+    "win_rate": 55.1,
+    "meta_score": 56.4
+  },
+  "Keera": {
+    "pick_rate": 20.41,
+    "ban_rate": 6.33,
+    "win_rate": 68.97,
+    "meta_score": 64.39
+  },
+  "Valhein": {
+    "pick_rate": 18.65,
+    "ban_rate": 8.8,
+    "win_rate": 52.83,
+    "meta_score": 58.26
+  },
+  "Mganga": {
+    "pick_rate": 21.46,
+    "ban_rate": 9.85,
+    "win_rate": 54.1,
+    "meta_score": 63.29
+  },
+  "Zata": {
+    "pick_rate": 23.22,
+    "ban_rate": 11.61,
+    "win_rate": 50.0,
+    "meta_score": 65.64
+  },
+  "Biron": {
+    "pick_rate": 14.43,
+    "ban_rate": 6.33,
+    "win_rate": 56.1,
+    "meta_score": 51.98
+  },
+  "Stuart": {
+    "pick_rate": 27.8,
+    "ban_rate": 13.72,
+    "win_rate": 50.63,
+    "meta_score": 73.7
+  },
+  "Dolia": {
+    "pick_rate": 24.63,
+    "ban_rate": 11.26,
+    "win_rate": 54.29,
+    "meta_score": 68.66
+  },
+  "Iggy": {
+    "pick_rate": 23.93,
+    "ban_rate": 12.67,
+    "win_rate": 47.06,
+    "meta_score": 66.46
+  },
+  "Capheny": {
+    "pick_rate": 22.17,
+    "ban_rate": 8.09,
+    "win_rate": 63.49,
+    "meta_score": 66.05
+  },
+  "Airi": {
+    "pick_rate": 14.07,
+    "ban_rate": 7.04,
+    "win_rate": 50.0,
+    "meta_score": 49.63
+  },
+  "Moren": {
+    "pick_rate": 17.95,
+    "ban_rate": 9.85,
+    "win_rate": 45.1,
+    "meta_score": 55.27
+  },
+  "Billow": {
+    "pick_rate": 23.57,
+    "ban_rate": 9.85,
+    "win_rate": 58.21,
+    "meta_score": 67.46
+  },
+  "Murad": {
+    "pick_rate": 15.48,
+    "ban_rate": 8.09,
+    "win_rate": 47.73,
+    "meta_score": 51.49
+  },
+  "Riktor": {
+    "pick_rate": 12.67,
+    "ban_rate": 6.69,
+    "win_rate": 47.22,
+    "meta_score": 46.31
+  },
+  "Annette": {
+    "pick_rate": 13.37,
+    "ban_rate": 8.44,
+    "win_rate": 36.84,
+    "meta_score": 44.46
+  },
+  "Florentino": {
+    "pick_rate": 13.72,
+    "ban_rate": 6.33,
+    "win_rate": 53.85,
+    "meta_score": 50.15
+  },
+  "Edras": {
+    "pick_rate": 20.41,
+    "ban_rate": 9.5,
+    "win_rate": 53.45,
+    "meta_score": 61.38
+  },
+  "Sinestrea": {
+    "pick_rate": 17.24,
+    "ban_rate": 10.91,
+    "win_rate": 36.73,
+    "meta_score": 51.97
+  },
+  "Aya": {
+    "pick_rate": 9.15,
+    "ban_rate": 3.17,
+    "win_rate": 65.38,
+    "meta_score": 46.59
+  },
+  "Ryoma": {
+    "pick_rate": 13.72,
+    "ban_rate": 7.39,
+    "win_rate": 46.15,
+    "meta_score": 47.88
+  },
+  "Natalya": {
+    "pick_rate": 5.63,
+    "ban_rate": 3.17,
+    "win_rate": 43.75,
+    "meta_score": 32.26
+  },
+  "Thane": {
+    "pick_rate": 14.07,
+    "ban_rate": 8.09,
+    "win_rate": 42.5,
+    "meta_score": 47.46
+  },
+  "Mina": {
+    "pick_rate": 9.15,
+    "ban_rate": 4.93,
+    "win_rate": 46.15,
+    "meta_score": 39.61
+  },
+  "Taara": {
+    "pick_rate": 15.83,
+    "ban_rate": 8.8,
+    "win_rate": 44.44,
+    "meta_score": 51.25
+  },
+  "Volkath": {
+    "pick_rate": 5.28,
+    "ban_rate": 2.81,
+    "win_rate": 46.67,
+    "meta_score": 32.83
+  },
+  "Ignis": {
+    "pick_rate": 13.72,
+    "ban_rate": 5.98,
+    "win_rate": 56.41,
+    "meta_score": 50.9
+  },
+  "Krizzix": {
+    "pick_rate": 7.39,
+    "ban_rate": 4.93,
+    "win_rate": 33.33,
+    "meta_score": 31.44
+  },
+  "Yue": {
+    "pick_rate": 12.32,
+    "ban_rate": 7.04,
+    "win_rate": 42.86,
+    "meta_score": 44.3
+  },
+  "Omen": {
+    "pick_rate": 8.44,
+    "ban_rate": 4.57,
+    "win_rate": 45.83,
+    "meta_score": 38.22
+  },
+  "Kriknak": {
+    "pick_rate": 1.41,
+    "ban_rate": 1.41,
+    "win_rate": 0.0,
+    "meta_score": 3.52
+  },
+  "Errol": {
+    "pick_rate": 2.46,
+    "ban_rate": 1.06,
+    "win_rate": 57.14,
+    "meta_score": 32.62
+  },
+  "Slimz": {
+    "pick_rate": 2.46,
+    "ban_rate": 1.76,
+    "win_rate": 28.57,
+    "meta_score": 19.39
+  },
+  "Tel'Annas": {
+    "pick_rate": 4.22,
+    "ban_rate": 2.11,
+    "win_rate": 50.0,
+    "meta_score": 32.39
+  },
+  "Grakk": {
+    "pick_rate": 1.41,
+    "ban_rate": 1.06,
+    "win_rate": 25.0,
+    "meta_score": 15.49
+  },
+  "Zuka": {
+    "pick_rate": 6.33,
+    "ban_rate": 4.57,
+    "win_rate": 27.78,
+    "meta_score": 27.08
+  },
+  "Heino": {
+    "pick_rate": 3.87,
+    "ban_rate": 1.76,
+    "win_rate": 54.55,
+    "meta_score": 33.78
+  },
+  "Maloch": {
+    "pick_rate": 8.09,
+    "ban_rate": 3.87,
+    "win_rate": 52.17,
+    "meta_score": 39.99
+  },
+  "Cresht": {
+    "pick_rate": 4.93,
+    "ban_rate": 1.76,
+    "win_rate": 64.29,
+    "meta_score": 39.71
+  },
+  "Xeniel": {
+    "pick_rate": 1.76,
+    "ban_rate": 0.35,
+    "win_rate": 80.0,
+    "meta_score": 42.29
+  },
+  "Charlotte": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.35,
+    "win_rate": 0.0,
+    "meta_score": 0.88
+  },
+  "Gildur": {
+    "pick_rate": 3.52,
+    "ban_rate": 1.76,
+    "win_rate": 50.0,
+    "meta_score": 31.16
+  },
+  "Helen": {
+    "pick_rate": 1.06,
+    "ban_rate": 0.7,
+    "win_rate": 33.33,
+    "meta_score": 18.78
+  },
+  "Ming": {
+    "pick_rate": 1.41,
+    "ban_rate": 0.35,
+    "win_rate": 75.0,
+    "meta_score": 39.44
+  },
+  "Sikong Zhen": {
+    "pick_rate": 2.46,
+    "ban_rate": 1.41,
+    "win_rate": 42.86,
+    "meta_score": 26.0
+  },
+  "Violet": {
+    "pick_rate": 1.41,
+    "ban_rate": 1.06,
+    "win_rate": 25.0,
+    "meta_score": 15.49
+  },
+  "Arduin": {
+    "pick_rate": 1.76,
+    "ban_rate": 0.7,
+    "win_rate": 60.0,
+    "meta_score": 32.81
+  },
+  "Chaugnar": {
+    "pick_rate": 2.46,
+    "ban_rate": 1.41,
+    "win_rate": 42.86,
+    "meta_score": 26.0
+  },
+  "Nakroth": {
+    "pick_rate": 6.33,
+    "ban_rate": 3.17,
+    "win_rate": 50.0,
+    "meta_score": 36.08
+  },
+  "Elsu": {
+    "pick_rate": 8.8,
+    "ban_rate": 3.87,
+    "win_rate": 56.0,
+    "meta_score": 42.6
+  },
+  "Aoi": {
+    "pick_rate": 1.76,
+    "ban_rate": 1.06,
+    "win_rate": 40.0,
+    "meta_score": 23.34
+  },
+  "Yan": {
+    "pick_rate": 1.06,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 51.06
+  },
+  "Azzen'Ka": {
+    "pick_rate": 1.06,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 51.06
+  },
+  "Baldum": {
+    "pick_rate": 3.17,
+    "ban_rate": 1.41,
+    "win_rate": 55.56,
+    "meta_score": 33.06
+  },
+  "Wiro Sableng": {
+    "pick_rate": 2.46,
+    "ban_rate": 1.06,
+    "win_rate": 57.14,
+    "meta_score": 32.62
+  },
+  "Sephera": {
+    "pick_rate": 1.06,
+    "ban_rate": 0.7,
+    "win_rate": 33.33,
+    "meta_score": 18.78
+  },
+  "Ata": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 50.35
+  },
+  "Laville": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 50.35
+  },
+  "Max": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 50.35
+  },
+  "Raz": {
+    "pick_rate": 1.06,
+    "ban_rate": 0.35,
+    "win_rate": 66.67,
+    "meta_score": 34.92
+  },
+  "Tulen": {
+    "pick_rate": 1.41,
+    "ban_rate": 0.35,
+    "win_rate": 75.0,
+    "meta_score": 39.44
+  },
+  "Zip": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 50.35
+  },
+  "Roxie": {
+    "pick_rate": 1.06,
+    "ban_rate": 1.06,
+    "win_rate": 0.0,
+    "meta_score": 2.64
+  },
+  "Jinnar": {
+    "pick_rate": 1.06,
+    "ban_rate": 0.35,
+    "win_rate": 66.67,
+    "meta_score": 34.92
+  },
+  "Goverra": {
+    "pick_rate": 0.7,
+    "ban_rate": 0.35,
+    "win_rate": 50.0,
+    "meta_score": 26.23
+  },
+  "Omega": {
+    "pick_rate": 0.7,
+    "ban_rate": 0.35,
+    "win_rate": 50.0,
+    "meta_score": 26.23
+  },
+  "Zanis": {
+    "pick_rate": 0.7,
+    "ban_rate": 0.35,
+    "win_rate": 50.0,
+    "meta_score": 26.23
+  },
+  "Bright": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.35,
+    "win_rate": 0.0,
+    "meta_score": 0.88
+  },
+  "Erin": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 50.35
+  },
+  "Kahlii": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 50.35
+  },
+  "Veres": {
+    "pick_rate": 0.35,
+    "ban_rate": 0.0,
+    "win_rate": 100.0,
+    "meta_score": 50.35
+  }
+}

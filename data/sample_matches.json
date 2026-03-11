@@ -1,0 +1,142 @@
+[
+    {
+        "game_number": 1,
+        "left_team": {
+            "is_winner": false,
+            "picks": [
+                "Marja",
+                "Edras",
+                "Rouie",
+                "Fennik",
+                "Thane"
+            ],
+            "bans": [
+                "Eland'orr",
+                "Dolia",
+                "Qi",
+                "Biron"
+            ]
+        },
+        "right_team": {
+            "is_winner": true,
+            "picks": [
+                "Ryoma",
+                "Tachi",
+                "Goverra",
+                "Hayate",
+                "Y'bneth"
+            ],
+            "bans": [
+                "Sinestrea",
+                "Zata",
+                "Murad",
+                "Florentino"
+            ]
+        }
+    },
+    {
+        "game_number": 2,
+        "left_team": {
+            "is_winner": true,
+            "picks": [
+                "Maloch",
+                "Aoi",
+                "Annette",
+                "Eland'orr",
+                "Dolia"
+            ],
+            "bans": [
+                "Sinestrea",
+                "Rouie",
+                "Murad",
+                "Zephys"
+            ]
+        },
+        "right_team": {
+            "is_winner": false,
+            "picks": [
+                "Biron",
+                "Zuka",
+                "Zata",
+                "Moren",
+                "Taara"
+            ],
+            "bans": [
+                "Hayate",
+                "Tachi",
+                "Stuart",
+                "Florentino"
+            ]
+        }
+    },
+    {
+        "game_number": 3,
+        "left_team": {
+            "is_winner": false,
+            "picks": [
+                "Murad",
+                "Keera",
+                "Iggy",
+                "Wisp",
+                "Toro"
+            ],
+            "bans": [
+                "Eland'orr",
+                "Rouie",
+                "Florentino",
+                "Zephys"
+            ]
+        },
+        "right_team": {
+            "is_winner": true,
+            "picks": [
+                "Omen",
+                "Marja",
+                "Lorion",
+                "Capheny",
+                "TeeMee"
+            ],
+            "bans": [
+                "Zata",
+                "Sinestrea",
+                "Qi",
+                "Biron"
+            ]
+        }
+    },
+    {
+        "game_number": 4,
+        "left_team": {
+            "is_winner": false,
+            "picks": [
+                "Qi",
+                "Zephys",
+                "Ignis",
+                "Hayate",
+                "Taara"
+            ],
+            "bans": [
+                "Sinestrea",
+                "Rouie",
+                "Edras",
+                "Billow"
+            ]
+        },
+        "right_team": {
+            "is_winner": true,
+            "picks": [
+                "Yena",
+                "Eland'orr",
+                "Mganga",
+                "Erin",
+                "Toro"
+            ],
+            "bans": [
+                "Zata",
+                "Stuart",
+                "Enzo",
+                "Yue"
+            ]
+        }
+    }
+]

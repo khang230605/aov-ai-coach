@@ -1,0 +1,333 @@
+/* Reset cơ bản */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+
+.draft-board { display: flex; flex-direction: column; height: 100vh; width: 100vw; }
+
+/* Header Cấm */
+.ban-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 40px; background: #0a0e17; border-bottom: 2px solid #1a2333; height: 80px;
+}
+.ban-side { display: flex; gap: 8px; width: 30%; }
+.ban-side.red { justify-content: flex-end; }
+.ban-icon-wrapper {
+  width: 45px; height: 45px; border: 1px solid #333; position: relative; overflow: hidden; background: #111;
+}
+.ban-icon-wrapper img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); }
+.ban-line { position: absolute; top: 50%; left: -10%; width: 120%; height: 2px; background: #ff4757; transform: rotate(45deg); }
+
+.status-center { text-align: center; flex: 1; }
+.phase-label { font-size: 14px; color: #f1c40f; text-transform: uppercase; letter-spacing: 2px; }
+.timer { font-size: 28px; font-weight: bold; color: white; }
+
+/* Khung chính */
+.main-draft { display: flex; flex: 1; padding: 15px; gap: 15px; overflow: hidden; }
+
+/* Cột Pick 2 bên */
+.pick-column { width: 20%; display: flex; flex-direction: column; gap: 10px; }
+.pick-slot {
+  height: 18%; background: rgba(255,255,255,0.03); border: 1px solid #1a2333;
+  display: flex; align-items: center; position: relative; overflow: hidden;
+}
+.pick-slot.active { border: 1px solid #3498db; box-shadow: inset 0 0 15px rgba(52,152,219,0.3); }
+
+.picked-info { display: flex; align-items: center; width: 100%; height: 100%; }
+.picked-info img { width: 90px; height: 100%; object-fit: cover; }
+.picked-info span { padding-left: 15px; font-weight: bold; font-size: 18px; text-transform: uppercase; }
+
+/* Team Đỏ (Bên phải) */
+.red-side .pick-slot.active { border-color: #e74c3c; box-shadow: inset 0 0 15px rgba(231,76,60,0.3); }
+.picked-info.reverse { flex-direction: row-reverse; }
+.picked-info.reverse span { padding-right: 15px; padding-left: 0; }
+
+/* Bảng giữa */
+/* Tách biệt center-panel */
+.center-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Tạo khoảng cách cố định giữa các phần */
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Gợi ý AI */
+/* Cố định chiều cao gợi ý AI để không đè xuống dưới */
+.ai-coach-panel {
+  background: #0d121d;
+  border: 1px solid #f1c40f;
+  padding: 10px;
+  border-radius: 4px;
+  flex-shrink: 0; /* Không cho phép phần này bị co lại */
+  margin-bottom: 5px;
+}
+.ai-coach-panel.hidden { display: none; }
+.suggest-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 8px; }
+.suggest-card { 
+  background: #161b28; display: flex; align-items: center; gap: 10px; padding: 5px; 
+  border-radius: 4px; cursor: pointer; border: 1px solid transparent;
+}
+.suggest-card:hover { border-color: #f1c40f; background: #1f283d; }
+.suggest-card img { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; }
+.s-info p { margin: 0; font-size: 12px; }
+.s-hero { font-weight: bold; color: #f1c40f; }
+.s-score { color: #2ecc71; font-size: 11px !important; }
+
+/* Grid Tướng */
+/* Quan trọng: Để Grid tự chiếm phần diện tích còn lại */
+.hero-grid {
+  flex: 1; /* Tự động lấy hết phần trống còn lại */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+  gap: 8px;
+  overflow-y: auto; /* Cho phép cuộn riêng phần này */
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+.hero-item { cursor: pointer; text-align: center; background: #0a0e17; transition: 0.2s; }
+.hero-item img { width: 100%; height: 75px; object-fit: cover; border: 1px solid #222; border-radius: 4px; }
+.hero-item span { font-size: 10px; display: block; margin-top: 2px; white-space: nowrap; overflow: hidden; }
+.hero-item.disabled { opacity: 0.3; filter: grayscale(1); cursor: not-allowed; }
+
+/* Thanh tìm kiếm phong cách AOV */
+.search-container {
+  padding: 5px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.search-input {
+  width: 80%;
+  padding: 10px 20px;
+  background: rgba(44, 62, 80, 0.7);
+  border: 1px solid #3498db;
+  border-radius: 20px;
+  color: white;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.search-input:focus {
+  border-color: #f1c40f;
+  background: rgba(52, 73, 94, 0.9);
+  box-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+}
+
+/* --- BẢNG PHÂN TÍCH ĐỘI HÌNH --- */
+.analysis-dashboard {
+  background: rgba(10, 14, 23, 0.9);
+  border: 1px solid #3498db;
+  border-radius: 8px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.dashboard-title {
+  color: #f1c40f;
+  margin-bottom: 30px;
+  font-size: 24px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(241, 196, 15, 0.5);
+}
+
+.win-rate-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  padding: 20px;
+  border-radius: 12px;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.team-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 40%;
+}
+
+.stat-label { font-size: 16px; color: #aaa; text-transform: uppercase; }
+.playstyle-tag { background: #2c3e50; padding: 5px 15px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+.wr-number { font-size: 48px; font-weight: bold; }
+
+.blue-stat .wr-number { color: #3498db; text-shadow: 0 0 15px rgba(52, 152, 219, 0.5); }
+.red-stat .wr-number { color: #e74c3c; text-shadow: 0 0 15px rgba(231, 76, 60, 0.5); }
+
+.vs-circle {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 50px;
+  background: #f1c40f;
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 0 0 20px rgba(241, 196, 15, 0.6);
+}
+
+.coach-summary-box {
+  background: rgba(46, 204, 113, 0.1);
+  border-left: 5px solid #2ecc71;
+  padding: 20px;
+  width: 100%;
+  border-radius: 4px;
+  margin-bottom: 30px;
+}
+
+.coach-summary-box h3 { color: #2ecc71; margin-bottom: 10px; }
+.coach-summary-box p { font-size: 16px; line-height: 1.5; color: #ddd; }
+
+.reset-btn {
+  background: transparent;
+  border: 2px solid #e74c3c;
+  color: #e74c3c;
+  padding: 10px 30px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.reset-btn:hover { background: #e74c3c; color: #fff; box-shadow: 0 0 15px rgba(231, 76, 60, 0.5); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* --- MÀN HÌNH CHỌN PHE (START SCREEN) --- */
+.start-screen {
+  width: 100vw;
+  height: 100vh;
+  /* Nếu bạn có một tấm ảnh nền Liên Quân đẹp, hãy thay URL ảnh vào đây: */
+  background: url('https://phongvu.vn/cong-nghe/wp-content/uploads/2025/07/33.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.start-screen .overlay {
+  background: rgba(5, 9, 18, 0.85); /* Lớp phủ làm tối và mờ ảnh nền */
+  backdrop-filter: blur(8px);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.logo-container h1 {
+  font-size: 3.5rem;
+  color: #f1c40f;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  margin-bottom: 10px;
+  text-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+  animation: titleGlow 2s infinite alternate;
+}
+
+.logo-container p {
+  color: #a0aec0;
+  font-size: 1.2rem;
+  margin-bottom: 50px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.side-buttons {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+/* Kiểu dáng chung cho Thẻ chọn đội */
+.side-card {
+  width: 280px;
+  height: 380px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.side-card h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  letter-spacing: 2px;
+}
+
+.side-card span {
+  font-size: 1rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Thẻ Đội Xanh */
+.blue-card {
+  border: 2px solid #3498db;
+  box-shadow: inset 0 0 20px rgba(52, 152, 219, 0.1), 0 0 20px rgba(52, 152, 219, 0.1);
+}
+.blue-card h2 { color: #3498db; text-shadow: 0 0 15px rgba(52,152,219,0.6); }
+.blue-card span { color: #3498db; }
+.blue-card:hover {
+  transform: translateY(-20px);
+  box-shadow: inset 0 0 30px rgba(52, 152, 219, 0.3), 0 20px 40px rgba(52, 152, 219, 0.4);
+  background: rgba(52, 152, 219, 0.1);
+}
+
+/* Thẻ Đội Đỏ */
+.red-card {
+  border: 2px solid #e74c3c;
+  box-shadow: inset 0 0 20px rgba(231, 76, 60, 0.1), 0 0 20px rgba(231, 76, 60, 0.1);
+}
+.red-card h2 { color: #e74c3c; text-shadow: 0 0 15px rgba(231,76,60,0.6); }
+.red-card span { color: #e74c3c; }
+.red-card:hover {
+  transform: translateY(-20px);
+  box-shadow: inset 0 0 30px rgba(231, 76, 60, 0.3), 0 20px 40px rgba(231, 76, 60, 0.4);
+  background: rgba(231, 76, 60, 0.1);
+}
+
+/* Nút VS ở giữa */
+.vs-badge {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff;
+  background: #111;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid #f1c40f;
+  box-shadow: 0 0 20px rgba(241, 196, 15, 0.4);
+  z-index: 10;
+}
+
+@keyframes titleGlow {
+  from { text-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
+  to { text-shadow: 0 0 20px rgba(241, 196, 15, 0.8), 0 0 30px rgba(241, 196, 15, 0.5); }
+}

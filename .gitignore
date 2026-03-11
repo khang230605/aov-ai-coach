@@ -1,0 +1,12 @@
+# Bỏ qua môi trường ảo của Python
+.venv/
+__pycache__/
+*.pyc
+
+# Bỏ qua thư viện của React
+node_modules/
+build/
+
+# Bỏ qua các file cấu hình môi trường (nếu có sau này)
+.env
+.DS_Store
