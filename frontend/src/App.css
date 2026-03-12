@@ -25,7 +25,14 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 .main-draft { display: flex; flex: 1; padding: 15px; gap: 15px; overflow: hidden; }
 
 /* Cột Pick 2 bên */
-.pick-column { width: 20%; display: flex; flex-direction: column; gap: 10px; }
+/* nén cột Pick 2 bên và GIM TRÊN MÀN HÌNH (Sticky) */
+  .pick-column { 
+    width: 110px !important; 
+    position: sticky !important; /* Lệnh ghim */
+    top: 55px !important; /* Nằm ngay dưới thanh Header Cấm (50px) + 5px đệm */
+    align-self: flex-start !important; /* LỆNH MA THUẬT: Cấm Flexbox kéo giãn cột này */
+    z-index: 10 !important; /* Nổi lên trên các thành phần khác */
+  }
 .pick-slot {
   height: 18%; background: rgba(255,255,255,0.03); border: 1px solid #1a2333;
   display: flex; align-items: center; position: relative; overflow: hidden;
