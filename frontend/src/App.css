@@ -177,9 +177,9 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 ========================================================= */
 .music-control {
   position: fixed;
-  top: 15px;
+  bottom: 20px; /* Đổi từ top sang bottom, cách đáy 20px cho thoáng */
   left: 15px;
-  z-index: 9999; /* Đảm bảo luôn nổi lên trên cùng */
+  z-index: 9999; 
   display: flex;
   align-items: center;
   gap: 10px;
@@ -187,7 +187,7 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   padding: 8px 15px;
   border-radius: 25px;
   border: 1px solid rgba(52, 152, 219, 0.5);
-  backdrop-filter: blur(8px); /* Hiệu ứng kính mờ */
+  backdrop-filter: blur(8px); 
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
 }
@@ -217,7 +217,7 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 .volume-slider {
   width: 80px;
   cursor: pointer;
-  accent-color: #f1c40f; /* Đổi màu thanh trượt thành vàng cho chuẩn AOV */
+  accent-color: #f1c40f; 
   height: 4px;
   background: #333;
   border-radius: 5px;
@@ -227,11 +227,11 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 /* --- Tối ưu kích thước Nhạc cho màn hình Điện thoại ngang --- */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   .music-control {
-    top: 5px !important;
-    left: 5px !important;
+    bottom: 10px !important; /* Đổi từ top sang bottom */
+    left: 10px !important;
     padding: 5px 10px !important;
     transform: scale(0.8);
-    transform-origin: top left;
+    transform-origin: bottom left; /* Đổi tâm thu nhỏ về góc dưới trái */
   }
 }
 
