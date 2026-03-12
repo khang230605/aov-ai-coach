@@ -475,6 +475,39 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
     padding-bottom: 20px;
   }
   .hero-item img { height: 60px !important; }
+
+  /* --- BẢNG PHÂN TÍCH MOBILE --- */
+  /* Thu nhỏ Bảng phân tích cuối game & MỞ KHÓA CUỘN */
+  .analysis-dashboard { 
+    padding: 15px; 
+    height: auto !important; /* Gỡ bỏ khóa 100% của PC */
+    min-height: 100%; 
+    padding-bottom: 50px !important; 
+  }
+
+  .dashboard-title { font-size: 18px !important; margin-bottom: 15px; }
+  .win-rate-section { padding: 10px; margin-bottom: 15px; }
+  .wr-number { font-size: 32px !important; }
+  .playstyle-tag { padding: 3px 10px; font-size: 11px; }
+  .vs-circle { width: 40px; height: 40px; font-size: 16px; }
+  
+  .coach-summary-box { padding: 10px; margin-bottom: 15px; }
+  .coach-summary-box p { font-size: 13px; }
+
+  /* Tối ưu dàn nút bấm cho màn hình ngang điện thoại */
+  .action-buttons {
+    display: flex;
+    flex-direction: column !important; /* Xếp dọc 2 nút thay vì xếp ngang */
+    gap: 10px;
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .action-buttons button {
+    width: 100% !important; /* Nút kéo dài toàn chiều ngang */
+    padding: 12px !important;
+    font-size: 14px !important;
+  }
 }
 
 /* --- NÚT ĐIỀU KHIỂN BO ĐẤU --- */
