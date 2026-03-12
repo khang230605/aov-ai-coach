@@ -7,6 +7,9 @@ import heroesData from './heroes.json';
 const pickSound = new Audio('/assets/sounds/pick.mp3');
 pickSound.volume = 0.7;
 
+const bgmSound = new Audio('/assets/sounds/aovbgm_khangxsuno.wav'); // Thay bằng đường dẫn file nhạc của bạn
+bgmSound.loop = true; // Cho phép lặp lại liên tục
+
 function App() {
   // 1. Hàm hỗ trợ tải dữ liệu từ thẻ nhớ (LocalStorage) cực an toàn
   const loadState = (key, defaultValue) => {
@@ -34,6 +37,44 @@ function App() {
   const [analysisResult, setAnalysisResult] = useState(() => loadState('aov_analysis', null));
   const [searchTerm, setSearchTerm] = useState("");
 
+  // --- LOGIC NHẠC NỀN ---
+  const [volume, setVolume] = useState(() => loadState('aov_volume', 0.5));
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+
+  // Đồng bộ âm lượng và lưu xuống LocalStorage
+  useEffect(() => {
+    bgmSound.volume = volume;
+    localStorage.setItem('aov_volume', JSON.stringify(volume));
+  }, [volume]);
+
+  // Hàm Bật/Tắt nhạc
+  const toggleMusic = () => {
+    if (isMusicPlaying) {
+      bgmSound.pause();
+    } else {
+      bgmSound.play().catch(e => console.log("Trình duyệt chặn autoplay"));
+    }
+    setIsMusicPlaying(!isMusicPlaying);
+  };
+
+  // Giao diện cụm nút bấm nhạc (Tạo sẵn để tái sử dụng)
+  const musicControlUI = (
+    <div className="music-control">
+      <button onClick={toggleMusic} className="btn-music">
+        {isMusicPlaying ? '🔊' : '🔇'}
+      </button>
+      <input 
+        type="range" min="0" max="1" step="0.05" 
+        value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))}
+        className="volume-slider"
+      />
+    </div>
+  );
+
+  // Role tướng
+  const ROLES = ["Tất cả", "Đỡ đòn", "Đấu sĩ", "Sát thủ", "Pháp sư", "Xạ thủ", "Trợ thủ"];
+  const [selectedRole, setSelectedRole] = useState("Tất cả");
+
   // 3. TỰ ĐỘNG LƯU MỌI THAY ĐỔI XUỐNG THẺ NHỚ
   useEffect(() => {
     localStorage.setItem('aov_inSeries', JSON.stringify(inSeries));
@@ -58,10 +99,17 @@ function App() {
     return `/assets/heroes/${keyword}.jpg`;
   };
 
-  const filteredHeroes = heroesData.filter(hero => 
-    hero.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    hero.keyword.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+    const filteredHeroes = heroesData.filter(hero => {
+        // 1. Kiểm tra từ khóa tìm kiếm
+        const matchSearch = hero.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                            hero.keyword.toLowerCase().includes(searchTerm.toLowerCase());
+        
+        // 2. Kiểm tra Role
+        // Nếu chọn "Tất cả" thì luôn đúng. Nếu chọn Role cụ thể, kiểm tra mảng hero.roles có chứa Role đó không.
+        const matchRole = selectedRole === "Tất cả" || (hero.roles && hero.roles.includes(selectedRole));
+
+        return matchSearch && matchRole;
+    });
 
   // --- LOGIC KIỂM TRA TƯỚNG BỊ KHÓA (GLOBAL BAN-PICK) ---
   const isHeroUnavailable = (heroName) => {
@@ -161,8 +209,19 @@ function App() {
     setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
   };
 
-  // --- CÁC HÀM ĐIỀU KHIỂN BO ĐẤU ---
-  const handleStartSeries = () => setInSeries(true);
+// --- CÁC HÀM ĐIỀU KHIỂN BO ĐẤU ---
+  const handleStartSeries = () => {
+    setInSeries(true); // Chuyển sang màn hình chọn Xanh/Đỏ
+    
+    // Kích hoạt nhạc nền ngay lập tức vì người dùng ĐÃ CLICK
+    if (!isMusicPlaying) {
+      bgmSound.play().then(() => {
+        setIsMusicPlaying(true); // Cập nhật icon thành 🔊
+      }).catch(err => {
+        console.log("Trình duyệt chặn phát nhạc:", err);
+      });
+    }
+  };
 
   const handleNextGame = () => {
     // Lưu lại tướng đã dùng của Game vừa rồi
@@ -215,6 +274,7 @@ const handleEndSeries = () => {
           <h2>Vui lòng xoay ngang thiết bị</h2>
           <p>Giao diện cấm chọn chuẩn Esports được thiết kế tối ưu nhất cho màn hình ngang.</p>
         </div>
+        {musicControlUI}
         <div className="start-screen">
           <div className="overlay">
             <div className="logo-container">
@@ -238,6 +298,7 @@ const handleEndSeries = () => {
           <div className="rotate-icon">📱 🔄</div>
           <h2>Vui lòng xoay ngang thiết bị</h2>
         </div>
+        {musicControlUI}
         <div className="start-screen">
           <div className="overlay">
             <div className="logo-container">
@@ -270,7 +331,7 @@ const handleEndSeries = () => {
         <div className="rotate-icon">📱 🔄</div>
         <h2>Vui lòng xoay ngang thiết bị</h2>
       </div>
-
+    {musicControlUI}
       <div className="draft-board">
         <div className="ban-header">
           <div className="ban-side blue">
@@ -372,6 +433,19 @@ const handleEndSeries = () => {
                     <input type="text" placeholder="Tìm tên tướng..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" />
                 </div>
                 
+                {/* THANH LỌC VAI TRÒ (ROLE FILTER) */}
+                <div className="role-filter-container">
+                    {ROLES.map((role) => (
+                        <div 
+                            key={role} 
+                            className={`role-tab ${selectedRole === role ? 'active' : ''}`}
+                            onClick={() => setSelectedRole(role)}
+                        >
+                            {role}
+                        </div>
+                    ))}
+                </div>
+
                 <div className="hero-grid">
                     {filteredHeroes.map((hero) => (
                     <div 

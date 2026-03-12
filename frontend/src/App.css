@@ -55,6 +55,64 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 .hero-item.disabled { opacity: 0.3; filter: grayscale(1); cursor: not-allowed; }
 
 .search-container { padding: 5px 0; display: flex; justify-content: center; }
+/* Thanh lọc vai trò (Role Filter) */
+.role-filter-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(30, 20, 60, 0.5); /* Màu nền tím thẫm mờ */
+  padding: 0 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+  overflow-x: auto; /* Cho phép cuộn ngang nếu màn hình quá nhỏ */
+  white-space: nowrap; /* Ép chữ trên 1 dòng */
+}
+
+/* Ẩn thanh cuộn xấu xí */
+.role-filter-container::-webkit-scrollbar { display: none; }
+
+.role-tab {
+  padding: 12px 15px;
+  font-size: 14px;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.role-tab:hover {
+  color: #fff;
+}
+
+/* Hiệu ứng khi được chọn (Active) */
+.role-tab.active {
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Cái vạch vàng hắt sáng bên dưới khi active */
+.role-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; /* Đè lên vạch border của container */
+  left: 10%;
+  width: 80%;
+  height: 2px;
+  background: #f1c40f;
+  box-shadow: 0 -5px 15px 2px rgba(241, 196, 15, 0.5); /* Ánh sáng tỏa lên */
+}
+
+/* --- Tối ưu Role Filter cho màn hình Mobile (Landscape) --- */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  .role-filter-container {
+    padding: 0 5px;
+    margin-bottom: 5px;
+  }
+  .role-tab {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+}
 .search-input { width: 80%; padding: 10px 20px; background: rgba(44, 62, 80, 0.7); border: 1px solid #3498db; border-radius: 20px; color: white; outline: none; font-size: 14px; transition: 0.3s; }
 .search-input:focus { border-color: #f1c40f; background: rgba(52, 73, 94, 0.9); box-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
 
@@ -113,6 +171,69 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   .rotate-warning p { color: #aaa; font-size: 14px; line-height: 1.5; }
 }
 @keyframes spinRotate { 0% { transform: rotate(0deg); } 50% { transform: rotate(-90deg); } 100% { transform: rotate(-90deg); } }
+
+/* =========================================================
+   🎵 CỤM ĐIỀU KHIỂN NHẠC NỀN
+========================================================= */
+.music-control {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 9999; /* Đảm bảo luôn nổi lên trên cùng */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(10, 14, 23, 0.7);
+  padding: 8px 15px;
+  border-radius: 25px;
+  border: 1px solid rgba(52, 152, 219, 0.5);
+  backdrop-filter: blur(8px); /* Hiệu ứng kính mờ */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.music-control:hover {
+  border-color: #f1c40f;
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+}
+
+.btn-music {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: white;
+  transition: 0.2s;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-music:hover {
+  transform: scale(1.15) rotate(-10deg);
+}
+
+.volume-slider {
+  width: 80px;
+  cursor: pointer;
+  accent-color: #f1c40f; /* Đổi màu thanh trượt thành vàng cho chuẩn AOV */
+  height: 4px;
+  background: #333;
+  border-radius: 5px;
+  outline: none;
+}
+
+/* --- Tối ưu kích thước Nhạc cho màn hình Điện thoại ngang --- */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  .music-control {
+    top: 5px !important;
+    left: 5px !important;
+    padding: 5px 10px !important;
+    transform: scale(0.8);
+    transform-origin: top left;
+  }
+}
 
 /* =========================================================
    📱 KHI ĐIỆN THOẠI ĐÃ XOAY NGANG (LANDSCAPE)
