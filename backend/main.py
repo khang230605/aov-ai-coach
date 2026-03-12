@@ -52,14 +52,31 @@ def get_lanes(hero_name):
     return ["Flex"]
 
 @app.get("/draft")
-def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
+def draft_engine(
+    your_team: str = "", 
+    enemy_team: str = "", 
+    bans: str = "",
+    your_used: str = "",  # THÊM MỚI: Tướng team mình đã pick các game trước
+    enemy_used: str = ""  # THÊM MỚI: Tướng team địch đã pick các game trước
+):
     # 1. Chuẩn hóa đầu vào
     y_picks = [norm(x.strip()) for x in your_team.split(",") if x.strip()]
     e_picks = [norm(x.strip()) for x in enemy_team.split(",") if x.strip()]
     b_list = [norm(x.strip()) for x in bans.split(",") if x.strip()]
     
-    # ĐƯA LÊN ĐẦU: Danh sách tướng không được phép gợi ý nữa
-    unavailable = set(y_picks + e_picks + b_list)
+    # Chuẩn hóa danh sách tướng đã dùng ở các ván trước
+    y_used_list = [norm(x.strip()) for x in your_used.split(",") if x.strip()]
+    e_used_list = [norm(x.strip()) for x in enemy_used.split(",") if x.strip()]
+    
+    # Những tướng đang nằm trên bàn draft HIỆN TẠI (Pick & Ban của cả 2 team)
+    current_draft_unavailable = set(y_picks + e_picks + b_list)
+    
+    # LUẬT GLOBAL BAN-PICK:
+    # Tướng MÌNH không thể pick = Tướng đang trên bàn draft + Tướng mình đã dùng
+    unavailable_for_you = current_draft_unavailable.union(set(y_used_list))
+    
+    # Tướng ĐỊCH không thể pick (và mình cũng không cần cấm) = Tướng đang trên bàn draft + Tướng địch đã dùng
+    unavailable_for_enemy = current_draft_unavailable.union(set(e_used_list))
 
     # 2. Xác định các Lane đã có người
     your_occupied_lanes = []
@@ -80,12 +97,10 @@ def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
         early_bans = []
         
         for name, stat in meta_db.items():
-            if norm(name) not in unavailable:
+            # Gợi ý PICK: Phải né tướng mình đã dùng
+            if norm(name) not in unavailable_for_you:
                 winrate = stat.get('win_rate', 0)
-                ban_rate = stat.get('ban_rate', 0)
                 meta_score = stat.get('meta_score', 0)
-                
-                # Gợi ý PICK: Ưu tiên điểm Meta tổng hợp
                 early_picks.append({
                     "hero": name, 
                     "sort_key": meta_score, 
@@ -94,15 +109,17 @@ def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
                     "type": "meta"
                 })
                 
-                # Gợi ý BAN: Ưu tiên TUYỆT ĐỐI vào Tỉ lệ Cấm (Ban Rate)
+            # Gợi ý BAN: Phải né tướng địch đã dùng
+            if norm(name) not in unavailable_for_enemy:
+                ban_rate = stat.get('ban_rate', 0)
+                winrate = stat.get('win_rate', 0)
                 early_bans.append({
                     "hero": name, 
-                    "sort_key": ban_rate, # Dùng Tỉ lệ cấm để xếp hạng
+                    "sort_key": ban_rate, 
                     "score": winrate,
                     "reason": f"Tướng cực nguy hiểm (Ban: {ban_rate}%)"
                 })
         
-        # Sắp xếp 2 danh sách theo 2 tiêu chí khác nhau
         early_picks = sorted(early_picks, key=lambda x: x['sort_key'], reverse=True)
         early_bans = sorted(early_bans, key=lambda x: x['sort_key'], reverse=True)
         
@@ -122,18 +139,16 @@ def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
         counters = kb["best_counters"].get(target_enemy, {})
         for h, stat in counters.items():
             h_norm = norm(h)
-            if h_norm not in unavailable and can_pick_for_lane(h, your_occupied_lanes):
-                # Lấy Winrate đối đầu và Meta Score của tướng này
+            # Áp dụng unavailable_for_you
+            if h_norm not in unavailable_for_you and can_pick_for_lane(h, your_occupied_lanes):
                 matchup_wr = stat.get("winrate", 50)
                 meta_score = norm_meta_db.get(h_norm, {}).get('meta_score', 0)
-                
-                # CÔNG THỨC MỚI: 60% Khắc chế + 40% Sức mạnh Meta
                 combined_score = (matchup_wr * 0.6) + (meta_score * 0.4)
                 
                 pick_suggestions.append({
                     "hero": h, 
                     "reason": f"Khắc chế {target_enemy}", 
-                    "score": round(combined_score, 2), # Gửi Combined Score về cho mượt
+                    "score": round(combined_score, 2),
                     "type": "counter"
                 })
 
@@ -145,11 +160,10 @@ def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
         synergies = kb["best_synergies"].get(target_ally, {})
         for h, stat in synergies.items():
             h_norm = norm(h)
-            if h_norm not in unavailable and can_pick_for_lane(h, your_occupied_lanes):
+            # Áp dụng unavailable_for_you
+            if h_norm not in unavailable_for_you and can_pick_for_lane(h, your_occupied_lanes):
                 matchup_wr = stat.get("winrate", 50)
                 meta_score = norm_meta_db.get(h_norm, {}).get('meta_score', 0)
-                
-                # CÔNG THỨC MỚI: 60% Combo + 40% Sức mạnh Meta
                 combined_score = (matchup_wr * 0.6) + (meta_score * 0.4)
                 
                 if not any(s['hero'] == h for s in pick_suggestions):
@@ -160,10 +174,11 @@ def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
                         "type": "synergy"
                     })
 
-    # FILLER LOGIC: Giữ nguyên như cũ...
+    # FILLER LOGIC PICK
     if len(pick_suggestions) < 8:
         for name, stat in sorted(meta_db.items(), key=lambda x: x[1].get('meta_score', 0), reverse=True):
-            if norm(name) not in unavailable and can_pick_for_lane(name, your_occupied_lanes):
+            # Áp dụng unavailable_for_you
+            if norm(name) not in unavailable_for_you and can_pick_for_lane(name, your_occupied_lanes):
                 if not any(s['hero'] == name for s in pick_suggestions):
                     pick_suggestions.append({
                         "hero": name, 
@@ -181,11 +196,10 @@ def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
         e_synergies = kb["best_synergies"].get(target_enemy, {})
         for h, stat in e_synergies.items():
             h_norm = norm(h)
-            if h_norm not in unavailable and can_pick_for_lane(h, enemy_occupied_lanes):
+            # Áp dụng unavailable_for_enemy
+            if h_norm not in unavailable_for_enemy and can_pick_for_lane(h, enemy_occupied_lanes):
                 matchup_wr = stat.get("winrate", 50)
                 meta_score = norm_meta_db.get(h_norm, {}).get('meta_score', 0)
-                
-                # Để cấm thì chú trọng Meta nhiều hơn một chút (50 - 50)
                 combined_score = (matchup_wr * 0.5) + (meta_score * 0.5)
                 
                 ban_suggestions.append({
@@ -194,11 +208,11 @@ def draft_engine(your_team: str = "", enemy_team: str = "", bans: str = ""):
                     "score": round(combined_score, 2)
                 })
 
-    # FILLER LOGIC: Nếu không đủ 4 ban, lấy top Meta nhét vào
+    # FILLER LOGIC BAN
     if len(ban_suggestions) < 4:
-        # Thay đổi x[1].get('meta_score') thành x[1].get('ban_rate') ở dòng dưới:
         for name, stat in sorted(meta_db.items(), key=lambda x: x[1].get('ban_rate', 0), reverse=True):
-            if norm(name) not in unavailable and can_pick_for_lane(name, enemy_occupied_lanes):
+            # Áp dụng unavailable_for_enemy
+            if norm(name) not in unavailable_for_enemy and can_pick_for_lane(name, enemy_occupied_lanes):
                 if not any(b['hero'] == name for b in ban_suggestions):
                     ban_suggestions.append({
                         "hero": name, 
