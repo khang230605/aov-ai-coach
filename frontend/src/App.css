@@ -379,10 +379,14 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   50% { transform: rotate(-90deg); }
   100% { transform: rotate(-90deg); }
 }
-
 /* 3. KHI ĐIỆN THOẠI ĐÃ XOAY NGANG (LANDSCAPE) */
 @media screen and (max-height: 600px) and (orientation: landscape) {
-  /* 1. Nén màn hình Start (Hình 2) */
+  /* --- MỞ KHÓA CUỘN TOÀN TRANG --- */
+  body, html { overflow-y: auto !important; overflow-x: hidden; }
+  .draft-board { height: auto !important; min-height: 100vh; overflow: visible !important; }
+  .main-draft { height: auto !important; overflow: visible !important; align-items: flex-start; }
+
+  /* 1. Nén màn hình Start */
   .logo-container h1 { font-size: 1.5rem !important; margin-top: 0; }
   .logo-container p { font-size: 0.8rem !important; margin-bottom: 20px; }
   .side-buttons { gap: 15px; }
@@ -391,26 +395,31 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   .side-card span { font-size: 0.7rem !important; text-align: center; }
   .vs-badge { width: 40px; height: 40px; font-size: 1rem; }
 
-  /* 2. Nén Header (Hình 1) */
-  .ban-header { height: 50px !important; padding: 0 20px !important; }
-  .status-center { transform: scale(0.8); } /* Thu nhỏ cả cụm timer */
+  /* 2. Nén Header */
+  .ban-header { height: 50px !important; padding: 0 20px !important; position: sticky; top: 0; z-index: 100; }
+  .status-center { transform: scale(0.8); } 
 
-  /* 3. Nén cột Pick 2 bên để nhường chỗ cho trung tâm */
-  .pick-column { width: 110px !important; } /* Thu hẹp chiều ngang */
+  /* 3. Nén cột Pick 2 bên và GIM TRÊN MÀN HÌNH (Sticky) */
+  .pick-column { 
+    width: 110px !important; 
+    position: sticky; 
+    top: 60px; /* Cách thanh header ở trên một chút */
+    z-index: 10;
+  } 
   .pick-slot { height: 40px !important; } 
   .picked-info img { width: 40px !important; height: 40px !important; }
   .picked-info span { font-size: 10px !important; padding-left: 5px !important; }
 
-  /* Tối ưu Center Panel: Bắt buộc cuộn */
+  /* Tối ưu Center Panel: Chiều cao tự do, không tự cuộn nội bộ nữa */
   .center-panel {
     flex: 1;
     margin: 0 5px;
     padding-bottom: 80px; 
-    overflow-y: auto !important; /* Đảm bảo được cuộn */
-    height: 100% !important;
+    overflow: visible !important; 
+    height: auto !important;
   }
 
-  /* 5. Ép AI Suggestion Grid: Dứt khoát dùng 2 cột cho mọi điện thoại nằm ngang */
+  /* 5. Ép AI Suggestion Grid */
   .suggest-grid {
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 8px !important;
@@ -419,21 +428,21 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   .suggest-card {
     padding: 5px !important;
     gap: 8px !important;
-    overflow: hidden; /* Không cho nội dung tràn ra ngoài thẻ */
+    overflow: hidden; 
   }
 
   .suggest-card img { 
     width: 35px !important; 
     height: 35px !important; 
-    flex-shrink: 0; /* Lệnh ma thuật: CẤM BÓP MÉO ẢNH */
+    flex-shrink: 0; 
   }
 
-  /* Xử lý phần chữ bên trong thẻ Gợi ý */
+  /* Xử lý phần chữ */
   .s-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow: hidden; /* Khóa không cho chữ đẩy khung */
+    overflow: hidden; 
     width: 100%;
   }
 
@@ -441,13 +450,12 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
     font-size: 12px !important; 
     white-space: nowrap; 
     overflow: hidden; 
-    text-overflow: ellipsis; /* Dài quá thì hiện dấu ... */
+    text-overflow: ellipsis; 
   }
 
   .s-reason { 
     font-size: 10px !important; 
     line-height: 1.2 !important;
-    /* Ép chữ dàn tối đa 2 dòng, dài hơn tự cắt (dùng cho Webkit/Mobile) */
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -460,27 +468,24 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
     margin-top: 2px;
   }
 
-
-  /* Chống bị ép chiều cao cho 2 thanh bên trên */
   .ai-coach-panel, .search-container {
-    flex-shrink: 0 !important; /* Cấm bóp méo */
+    flex-shrink: 0 !important; 
   }
 
-  /* Thu nhỏ Grid tướng & MỞ KHÓA CHIỀU CAO */
+  /* Thu nhỏ Grid tướng */
   .hero-grid {
     grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)) !important;
-    flex: none !important; /* PHÉP THUẬT Ở ĐÂY: Gỡ bỏ lệnh flex: 1 ở PC */
-    height: auto !important; /* Bung hết cỡ chiều cao thực tế của danh sách tướng */
-    overflow: visible !important; /* Tắt cuộn riêng của grid */
+    flex: none !important; 
+    height: auto !important; 
+    overflow: visible !important; 
     padding-bottom: 20px;
   }
   .hero-item img { height: 60px !important; }
 
   /* --- BẢNG PHÂN TÍCH MOBILE --- */
-  /* Thu nhỏ Bảng phân tích cuối game & MỞ KHÓA CUỘN */
   .analysis-dashboard { 
     padding: 15px; 
-    height: auto !important; /* Gỡ bỏ khóa 100% của PC */
+    height: auto !important; 
     min-height: 100%; 
     padding-bottom: 50px !important; 
   }
@@ -494,17 +499,17 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   .coach-summary-box { padding: 10px; margin-bottom: 15px; }
   .coach-summary-box p { font-size: 13px; }
 
-  /* Tối ưu dàn nút bấm cho màn hình ngang điện thoại */
+  /* Tối ưu dàn nút bấm */
   .action-buttons {
     display: flex;
-    flex-direction: column !important; /* Xếp dọc 2 nút thay vì xếp ngang */
+    flex-direction: column !important; 
     gap: 10px;
     width: 100%;
     margin-top: 15px;
   }
 
   .action-buttons button {
-    width: 100% !important; /* Nút kéo dài toàn chiều ngang */
+    width: 100% !important; 
     padding: 12px !important;
     font-size: 14px !important;
   }
