@@ -382,83 +382,97 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 
 /* 3. KHI ĐIỆN THOẠI ĐÃ XOAY NGANG (LANDSCAPE) */
 @media screen and (max-height: 600px) and (orientation: landscape) {
-  /* Thu nhỏ màn hình Start */
-  .logo-container h1 { font-size: 2rem; margin-top: -20px; }
-  .side-card { width: 220px; height: 260px; }
-  .side-card h2 { font-size: 1.8rem; }
-  .vs-badge { width: 50px; height: 50px; font-size: 1.2rem; }
+  /* 1. Nén màn hình Start (Hình 2) */
+  .logo-container h1 { font-size: 1.5rem !important; margin-top: 0; }
+  .logo-container p { font-size: 0.8rem !important; margin-bottom: 20px; }
+  .side-buttons { gap: 15px; }
+  .side-card { width: 180px !important; height: 200px !important; padding: 10px; }
+  .side-card h2 { font-size: 1.2rem !important; }
+  .side-card span { font-size: 0.7rem !important; text-align: center; }
+  .vs-badge { width: 40px; height: 40px; font-size: 1rem; }
 
-  /* Ép Draft Board vừa vặn màn hình */
-  .draft-board { 
-    height: 100vh; /* Fallback cho trình duyệt cũ */
-    height: 100dvh; /* Trình duyệt xịn sẽ dùng cái này: Tự trừ đi thanh URL */
+  /* 2. Nén Header (Hình 1) */
+  .ban-header { height: 50px !important; padding: 0 20px !important; }
+  .status-center { transform: scale(0.8); } /* Thu nhỏ cả cụm timer */
+
+  /* 3. Nén cột Pick 2 bên để nhường chỗ cho trung tâm */
+  .pick-column { width: 110px !important; } /* Thu hẹp chiều ngang */
+  .pick-slot { height: 40px !important; } 
+  .picked-info img { width: 40px !important; height: 40px !important; }
+  .picked-info span { font-size: 10px !important; padding-left: 5px !important; }
+
+  /* Tối ưu Center Panel: Bắt buộc cuộn */
+  .center-panel {
+    flex: 1;
+    margin: 0 5px;
+    padding-bottom: 80px; 
+    overflow-y: auto !important; /* Đảm bảo được cuộn */
+    height: 100% !important;
+  }
+
+  /* 5. Ép AI Suggestion Grid: Dứt khoát dùng 2 cột cho mọi điện thoại nằm ngang */
+  .suggest-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .suggest-card {
+    padding: 5px !important;
+    gap: 8px !important;
+    overflow: hidden; /* Không cho nội dung tràn ra ngoài thẻ */
+  }
+
+  .suggest-card img { 
+    width: 35px !important; 
+    height: 35px !important; 
+    flex-shrink: 0; /* Lệnh ma thuật: CẤM BÓP MÉO ẢNH */
+  }
+
+  /* Xử lý phần chữ bên trong thẻ Gợi ý */
+  .s-info {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    overflow: hidden; /* Khóa không cho chữ đẩy khung */
+    width: 100%;
+  }
+
+  .s-hero { 
+    font-size: 12px !important; 
+    white-space: nowrap; 
     overflow: hidden; 
-    padding: 5px; 
-  }
-  
-  /* Thu nhỏ thanh Cấm (Bans) */
-  .ban-header { padding: 5px; margin-bottom: 5px; }
-  .ban-icon-wrapper img { width: 35px; height: 35px; border-width: 1px; }
-  .timer { font-size: 24px; }
-  .phase-label { font-size: 12px; }
-
-  /* Thu nhỏ cột Pick 2 bên */
-  .pick-column { width: 140px; gap: 5px; }
-  .pick-slot { height: 45px; border-width: 1px; }
-  .picked-info img { width: 45px; height: 45px; }
-  .picked-info span { font-size: 12px; }
-
-  .main-draft {
-    flex: 1; /* Tự co giãn chiếm hết không gian dưới thanh Cấm */
-    display: flex;
-    overflow: hidden; /* Rất quan trọng: Không cho phép tràn ra ngoài */
-    min-height: 0; /* Hack thần thánh của Flexbox để không bị tràn vh */
+    text-overflow: ellipsis; /* Dài quá thì hiện dấu ... */
   }
 
-.center-panel { 
-    flex: 1; 
-    margin: 0 10px; 
-    overflow-y: auto; 
-    height: 100%; 
-    padding-bottom: 60px; /* Tăng lên 60px để né cái gạch ngang dưới đáy iPhone */
+  .s-reason { 
+    font-size: 10px !important; 
+    line-height: 1.2 !important;
+    /* Ép chữ dàn tối đa 2 dòng, dài hơn tự cắt (dùng cho Webkit/Mobile) */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    white-space: normal !important;
   }
 
-  /* Tùy chỉnh thanh cuộn cho thanh mảnh (Giữ nguyên) */
-  .center-panel::-webkit-scrollbar { width: 4px; }
-  .center-panel::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
-  .center-panel::-webkit-scrollbar-thumb { background: #3498db; border-radius: 10px; }
-  .search-input { padding: 8px 15px; font-size: 14px; margin-bottom: 10px; }
-  
-  /* Thu nhỏ Lưới tướng */
-  .hero-grid { 
-    gap: 5px; 
-    padding-right: 5px; 
-    overflow-y: visible; /* Tắt cuộn riêng của Grid */
-    height: auto; /* Thả rông chiều cao để nó giãn hết cỡ xuống dưới */
+  .s-score { 
+    font-size: 11px !important; 
+    margin-top: 2px;
   }
-  .hero-item { width: 55px; height: 65px; border-radius: 4px; }
-  .hero-item img { width: 40px; height: 40px; border-radius: 50%; }
-  .hero-item span { font-size: 9px; margin-top: 2px; }
 
-  /* Thu nhỏ AI Suggestions */
-  .ai-coach-panel { padding: 8px; margin-bottom: 10px; }
-  .ai-coach-panel h3 { font-size: 12px; margin-bottom: 5px; }
-  .suggest-card { padding: 5px; }
-  .suggest-card img { width: 30px; height: 30px; }
-  .s-hero { font-size: 12px; }
-  .s-reason { font-size: 10px; }
-  .s-score { font-size: 11px; }
 
-  /* Thu nhỏ Bảng phân tích cuối game */
-  .analysis-dashboard { padding: 15px; }
-  .dashboard-title { font-size: 18px; margin-bottom: 15px; }
-  .win-rate-section { padding: 10px; margin-bottom: 15px; }
-  .wr-number { font-size: 32px; }
-  .playstyle-tag { padding: 3px 10px; font-size: 11px; }
-  .vs-circle { width: 40px; height: 40px; font-size: 16px; }
-  .coach-summary-box { padding: 10px; margin-bottom: 15px; }
-  .coach-summary-box p { font-size: 13px; }
-  .reset-btn { padding: 8px 20px; font-size: 14px; }
+  /* Chống bị ép chiều cao cho 2 thanh bên trên */
+  .ai-coach-panel, .search-container {
+    flex-shrink: 0 !important; /* Cấm bóp méo */
+  }
+
+  /* Thu nhỏ Grid tướng & MỞ KHÓA CHIỀU CAO */
+  .hero-grid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)) !important;
+    flex: none !important; /* PHÉP THUẬT Ở ĐÂY: Gỡ bỏ lệnh flex: 1 ở PC */
+    height: auto !important; /* Bung hết cỡ chiều cao thực tế của danh sách tướng */
+    overflow: visible !important; /* Tắt cuộn riêng của grid */
+    padding-bottom: 20px;
+  }
+  .hero-item img { height: 60px !important; }
 }
