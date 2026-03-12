@@ -331,3 +331,134 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   from { text-shadow: 0 0 10px rgba(241, 196, 15, 0.3); }
   to { text-shadow: 0 0 20px rgba(241, 196, 15, 0.8), 0 0 30px rgba(241, 196, 15, 0.5); }
 }
+
+/* =========================================================
+   📱 RESPONSIVE & MOBILE LANDSCAPE FORCE
+========================================================= */
+
+/* 1. Mặc định ẩn màn hình cảnh báo trên PC */
+.rotate-warning {
+  display: none;
+}
+
+/* 2. KHI DÙNG ĐIỆN THOẠI MÀ CẦM DỌC (PORTRAIT) */
+@media screen and (max-width: 850px) and (orientation: portrait) {
+  /* Ẩn toàn bộ web đi */
+  .start-screen, .draft-board {
+    display: none !important;
+  }
+  
+  /* Hiện màn hình đen ép xoay máy */
+  .rotate-warning {
+    display: flex;
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: #0a0e17;
+    z-index: 9999;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .rotate-icon {
+    font-size: 60px;
+    margin-bottom: 20px;
+    animation: spinRotate 2s infinite ease-in-out;
+  }
+  
+  .rotate-warning h2 { color: #f1c40f; margin-bottom: 10px; }
+  .rotate-warning p { color: #aaa; font-size: 14px; line-height: 1.5; }
+}
+
+@keyframes spinRotate {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(-90deg); }
+  100% { transform: rotate(-90deg); }
+}
+
+/* 3. KHI ĐIỆN THOẠI ĐÃ XOAY NGANG (LANDSCAPE) */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  /* Thu nhỏ màn hình Start */
+  .logo-container h1 { font-size: 2rem; margin-top: -20px; }
+  .side-card { width: 220px; height: 260px; }
+  .side-card h2 { font-size: 1.8rem; }
+  .vs-badge { width: 50px; height: 50px; font-size: 1.2rem; }
+
+  /* Ép Draft Board vừa vặn màn hình */
+  .draft-board { 
+    height: 100vh; /* Fallback cho trình duyệt cũ */
+    height: 100dvh; /* Trình duyệt xịn sẽ dùng cái này: Tự trừ đi thanh URL */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    padding: 5px; 
+  }
+  
+  /* Thu nhỏ thanh Cấm (Bans) */
+  .ban-header { padding: 5px; margin-bottom: 5px; }
+  .ban-icon-wrapper img { width: 35px; height: 35px; border-width: 1px; }
+  .timer { font-size: 24px; }
+  .phase-label { font-size: 12px; }
+
+  /* Thu nhỏ cột Pick 2 bên */
+  .pick-column { width: 140px; gap: 5px; }
+  .pick-slot { height: 45px; border-width: 1px; }
+  .picked-info img { width: 45px; height: 45px; }
+  .picked-info span { font-size: 12px; }
+
+  .main-draft {
+    flex: 1; /* Tự co giãn chiếm hết không gian dưới thanh Cấm */
+    display: flex;
+    overflow: hidden; /* Rất quan trọng: Không cho phép tràn ra ngoài */
+    min-height: 0; /* Hack thần thánh của Flexbox để không bị tràn vh */
+  }
+
+.center-panel { 
+    flex: 1; 
+    margin: 0 10px; 
+    overflow-y: auto; 
+    height: 100%; 
+    padding-bottom: 60px; /* Tăng lên 60px để né cái gạch ngang dưới đáy iPhone */
+  }
+
+  /* Tùy chỉnh thanh cuộn cho thanh mảnh (Giữ nguyên) */
+  .center-panel::-webkit-scrollbar { width: 4px; }
+  .center-panel::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+  .center-panel::-webkit-scrollbar-thumb { background: #3498db; border-radius: 10px; }
+  .search-input { padding: 8px 15px; font-size: 14px; margin-bottom: 10px; }
+  
+  /* Thu nhỏ Lưới tướng */
+  .hero-grid { 
+    gap: 5px; 
+    padding-right: 5px; 
+    overflow-y: visible; /* Tắt cuộn riêng của Grid */
+    height: auto; /* Thả rông chiều cao để nó giãn hết cỡ xuống dưới */
+  }
+  .hero-item { width: 55px; height: 65px; border-radius: 4px; }
+  .hero-item img { width: 40px; height: 40px; border-radius: 50%; }
+  .hero-item span { font-size: 9px; margin-top: 2px; }
+
+  /* Thu nhỏ AI Suggestions */
+  .ai-coach-panel { padding: 8px; margin-bottom: 10px; }
+  .ai-coach-panel h3 { font-size: 12px; margin-bottom: 5px; }
+  .suggest-card { padding: 5px; }
+  .suggest-card img { width: 30px; height: 30px; }
+  .s-hero { font-size: 12px; }
+  .s-reason { font-size: 10px; }
+  .s-score { font-size: 11px; }
+
+  /* Thu nhỏ Bảng phân tích cuối game */
+  .analysis-dashboard { padding: 15px; }
+  .dashboard-title { font-size: 18px; margin-bottom: 15px; }
+  .win-rate-section { padding: 10px; margin-bottom: 15px; }
+  .wr-number { font-size: 32px; }
+  .playstyle-tag { padding: 3px 10px; font-size: 11px; }
+  .vs-circle { width: 40px; height: 40px; font-size: 16px; }
+  .coach-summary-box { padding: 10px; margin-bottom: 15px; }
+  .coach-summary-box p { font-size: 13px; }
+  .reset-btn { padding: 8px 20px; font-size: 14px; }
+}

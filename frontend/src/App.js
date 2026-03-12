@@ -129,6 +129,14 @@ const handleSelectHero = (heroName) => {
 
   if (!userSide) {
     return (
+    <>
+    {/* MÀN HÌNH CẢNH BÁO XOAY NGANG */}
+        <div className="rotate-warning">
+          <div className="rotate-icon">📱 🔄</div>
+          <h2>Vui lòng xoay ngang thiết bị</h2>
+          <p>Giao diện cấm chọn AOV được thiết kế tối ưu nhất cho màn hình ngang.</p>
+        </div>
+
       <div className="start-screen">
         <div className="overlay">
           <div className="logo-container">
@@ -151,6 +159,7 @@ const handleSelectHero = (heroName) => {
           </div>
         </div>
       </div>
+    </>
     );
   }
 
@@ -159,6 +168,7 @@ const handleSelectHero = (heroName) => {
   
     
   return (
+    <>
     <div className="draft-board">
       {/* Header: Hiển thị tướng Cấm bằng ảnh */}
       <div className="ban-header">
@@ -183,6 +193,7 @@ const handleSelectHero = (heroName) => {
           ))}
         </div>
       </div>
+    
 
       <div className="main-draft">
         {/* Picks Team Xanh */}
@@ -298,6 +309,7 @@ const handleSelectHero = (heroName) => {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
