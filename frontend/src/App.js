@@ -41,10 +41,16 @@ function App() {
   const [analysisResult, setAnalysisResult] = useState(() => loadState('aov_analysis', null));
   const [searchTerm, setSearchTerm] = useState("");
 
-  // --- STATE CHO TÍNH NĂNG BAN PICK DRAFT (TIER LIST) ---
+  // --- CẤU HÌNH & STATE CHO TÍNH NĂNG BAN PICK DRAFT (TIER LIST) ---
+  const DEFAULT_HERO_SIZE = 36; // Kích thước chuẩn để toàn bộ tướng vừa vặn 1 trang không cần scroll
+  const MIN_HERO_SIZE = 24;
+  const MAX_HERO_SIZE = 64;
+  const HERO_SIZE_STEP = 2;
+
   const [showBanPickDraft, setShowBanPickDraft] = useState(() => loadState('aov_showBanPickDraft', false));
   const [banPickDraftState, setBanPickDraftState] = useState(() => loadState('aov_banPickDraftState', {}));
   const [activeDropdownHero, setActiveDropdownHero] = useState(null);
+  const [heroSize, setHeroSize] = useState(() => loadState('aov_heroSize', DEFAULT_HERO_SIZE));
 
   // --- LOGIC GIỮ RENDER KHÔNG NGỦ & KIỂM TRA KẾT NỐI (KEEP-ALIVE HEARTBEAT) ---
   const [serverStatus, setServerStatus] = useState('checking'); // 'checking' | 'online' | 'waking' | 'offline'
@@ -151,6 +157,8 @@ function App() {
     setActiveDropdownHero(null);
     localStorage.removeItem('aov_showBanPickDraft');
     localStorage.removeItem('aov_banPickDraftState');
+    localStorage.removeItem('aov_heroSize');
+    setHeroSize(DEFAULT_HERO_SIZE);
   };
 
   // Giao diện cụm nút bấm nhạc & khởi động lại
@@ -193,7 +201,8 @@ function App() {
     localStorage.setItem('aov_analysis', JSON.stringify(analysisResult));
     localStorage.setItem('aov_showBanPickDraft', JSON.stringify(showBanPickDraft));
     localStorage.setItem('aov_banPickDraftState', JSON.stringify(banPickDraftState));
-  }, [inSeries, gameNumber, myTeamUsed, enemyTeamUsed, userSide, currentStepIdx, draftData, analysisResult, showBanPickDraft, banPickDraftState]);
+    localStorage.setItem('aov_heroSize', JSON.stringify(heroSize));
+  }, [inSeries, gameNumber, myTeamUsed, enemyTeamUsed, userSide, currentStepIdx, draftData, analysisResult, showBanPickDraft, banPickDraftState, heroSize]);
 
   const normalizeName = (str) => {
     if (!str) return '';
@@ -349,6 +358,19 @@ function App() {
     return '';
   };
 
+  // Điều chỉnh kích thước hình ảnh tướng trong bảng
+  const handleIncreaseHeroSize = () => {
+    setHeroSize(prev => Math.min(prev + HERO_SIZE_STEP, MAX_HERO_SIZE));
+  };
+
+  const handleDecreaseHeroSize = () => {
+    setHeroSize(prev => Math.max(prev - HERO_SIZE_STEP, MIN_HERO_SIZE));
+  };
+
+  const handleResetHeroSize = () => {
+    setHeroSize(DEFAULT_HERO_SIZE);
+  };
+
   const handleClearAllDraftPicks = () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa toàn bộ lượt cấm chọn trong bảng Tier List?")) {
       setBanPickDraftState({});
@@ -441,7 +463,6 @@ const handleEndSeries = () => {
           <h2>Vui lòng xoay ngang thiết bị</h2>
           <p>Giao diện BanPickDraft được thiết kế tối ưu nhất cho màn hình ngang.</p>
         </div>
-        {musicControlUI}
         <div className="bpd-screen-container">
           {/* Header thanh công cụ */}
           <div className="bpd-header-bar">
@@ -449,6 +470,20 @@ const handleEndSeries = () => {
               <button className="bpd-btn-back" onClick={() => { setShowBanPickDraft(false); setActiveDropdownHero(null); }}>
                 ⬅ Trang chủ
               </button>
+              
+              {/* Nút tăng giảm âm lượng lên trên góc trái, nằm bên phải nút về Trang chủ */}
+              <div className="bpd-volume-control" title="Âm lượng nhạc nền">
+                <button onClick={toggleMusic} className="bpd-btn-music" title={isMusicPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền'}>
+                  {isMusicPlaying ? '🔊' : '🔇'}
+                </button>
+                <input 
+                  type="range" min="0" max="1" step="0.05" 
+                  value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))}
+                  className="bpd-volume-slider"
+                  title="Âm lượng nhạc nền"
+                />
+              </div>
+
               <div className="bpd-title-group">
                 <h1 className="bpd-title">📋 BAN PICK DRAFT</h1>
                 <span className="bpd-subtitle">Tier List Meta Hiện Tại</span>
@@ -471,6 +506,36 @@ const handleEndSeries = () => {
               <button className="bpd-btn-clear" onClick={handleClearAllDraftPicks} title="Xóa tất cả lượt pick trong bảng">
                 🗑️ Xóa chọn
               </button>
+
+              {/* 1. Nút tăng / giảm size hình tướng */}
+              <div className="bpd-size-control-group" title="Tăng / Giảm kích thước hình tướng (các ô, cột và bảng giữ nguyên kích thước)">
+                <button 
+                  className="bpd-btn-size-step" 
+                  onClick={handleDecreaseHeroSize}
+                  disabled={heroSize <= MIN_HERO_SIZE}
+                  title="Thu nhỏ hình tướng (-2px)"
+                >
+                  ➖
+                </button>
+                <span className="bpd-size-value" title={`Kích cỡ hiện tại: ${heroSize}px`}>{heroSize}px</span>
+                <button 
+                  className="bpd-btn-size-step" 
+                  onClick={handleIncreaseHeroSize}
+                  disabled={heroSize >= MAX_HERO_SIZE}
+                  title="Phóng to hình tướng (+2px)"
+                >
+                  ➕
+                </button>
+              </div>
+
+              {/* 2. Nút quay về size mặc định (tất cả tướng nằm trong 1 trang, ko cần scroll) */}
+              <button 
+                className={`bpd-btn-size-reset ${heroSize === DEFAULT_HERO_SIZE ? 'is-default' : ''}`}
+                onClick={handleResetHeroSize}
+                title="Quay về size mặc định (tất cả tướng nằm vừa vặn trong 1 trang, không cần cuộn)"
+              >
+                ↺ Vừa 1 trang
+              </button>
             </div>
           </div>
 
@@ -482,8 +547,10 @@ const handleEndSeries = () => {
                   <th className="bpd-th-corner">TIER</th>
                   {LANES.map(lane => (
                     <th key={lane.id} className="bpd-th-lane">
-                      <span className="bpd-lane-icon">{lane.icon}</span>
-                      <span className="bpd-lane-name">{lane.id}</span>
+                      <div className="bpd-lane-header-inner">
+                        <img src={lane.icon} alt={lane.name} className="bpd-lane-icon-img" />
+                        <span className="bpd-lane-name">{lane.id}</span>
+                      </div>
                     </th>
                   ))}
                 </tr>
@@ -511,6 +578,7 @@ const handleEndSeries = () => {
                                   <div 
                                     key={`${lane.id}-${tier}-${hero.keyword}`} 
                                     className={`bpd-hero-item ${heroStateClass} ${isDropdownOpen ? 'dropdown-active' : ''}`}
+                                    style={{ width: `${heroSize}px`, height: `${heroSize}px` }}
                                     onClick={(e) => handleHeroDropdownToggle(hero.keyword, e)}
                                     title={`${hero.name} (${lane.id} - Tier ${tier})`}
                                   >

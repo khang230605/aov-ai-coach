@@ -544,3 +544,12 @@ python train.py
   - **Reset toàn diện:** Nút "🔄 Khởi động lại" reset sạch toàn bộ bảng về trạng thái mặc định và đưa về trang chủ.
   - **Lưu trữ bền vững:** Tự động lưu trạng thái vào `localStorage` (`aov_showBanPickDraft`, `aov_banPickDraftState`) giúp không bị mất dữ liệu khi F5/reload trang.
   - **Responsive tối ưu:** Hoạt động mượt mà trên desktop và điện thoại xoay ngang (mobile landscape).
+
+* **Cập nhật giao diện APL Esports & Bộ icon Lane thật (04/11/2026):**
+  - Tích hợp bộ icon thật của 5 Lane từ official assets (`toplane.png`, `junglelane.png`, `midlane.png`, `ad.png`, `sp.png`).
+  - Nâng cấp giao diện BanPickDraft theo chuẩn màu sắc Arena of Valor Premier League (APL / RoV):
+    + Tiêu đề cột Lane mang sắc cam-đỏ rực lửa (`linear-gradient(180deg, #ff5722, #b81400)`).
+    + Tier S phủ trọn nền vàng kim ấm áp, nhãn S đen vàng rực rỡ chuẩn SS.
+    + Các bậc Tier A, B, C, D, SPECIAL mang màu sắc gradient năng động, viền khung đỏ sẫm obsidian.
+    + Bổ sung nút tăng/giảm kích thước hình tướng linh hoạt (bước nhảy 2px) và nút "↺ Vừa 1 trang" đưa về size chuẩn 36px để vừa khít 100vh không cần cuộn.
+    + Đưa cụm điều khiển âm lượng lên góc trái cạnh nút "Trang chủ" và ẩn nút "Khởi động lại" khi đang ở chế độ BanPickDraft.

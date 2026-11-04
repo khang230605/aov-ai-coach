@@ -429,7 +429,7 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 
 
 /* =========================================================
-   📋 BAN PICK DRAFT (TIER LIST THEO LANE)
+   📋 BAN PICK DRAFT (TIER LIST THEO LANE - APL ESPORTS THEME)
 ========================================================= */
 
 /* Nút trên màn hình đầu tiên (Start Screen) */
@@ -443,17 +443,18 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 }
 
 .btn-banpick-draft {
-  background: linear-gradient(135deg, #0984e3, #6c5ce7);
-  border: 2px solid rgba(162, 155, 254, 0.6);
+  background: linear-gradient(135deg, #e67e22, #b71515);
+  border: 2px solid rgba(255, 204, 0, 0.6);
   padding: 15px 35px;
   font-size: 1.2rem;
-  font-weight: bold;
+  font-weight: 900;
   color: #ffffff;
   border-radius: 30px;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  box-shadow: 0 0 20px rgba(108, 92, 231, 0.5);
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif;
+  box-shadow: 0 0 25px rgba(230, 126, 34, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
@@ -462,18 +463,18 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 
 .btn-banpick-draft:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(108, 92, 231, 0.85);
-  border-color: #a29bfe;
+  box-shadow: 0 0 35px rgba(255, 71, 87, 0.85);
+  border-color: #ffd32a;
 }
 
-/* Container chính của toàn màn hình BanPickDraft */
+/* Container chính của BanPickDraft - Giao diện rực lửa APL Esports */
 .bpd-screen-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(circle at 50% 20%, #101726 0%, #060911 100%);
+  background: radial-gradient(ellipse at 50% 20%, #4a0707 0%, #260202 45%, #100101 75%, #050000 100%);
   color: white;
   display: flex;
   flex-direction: column;
@@ -486,268 +487,509 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 25px;
-  background: rgba(10, 14, 23, 0.95);
-  border-bottom: 2px solid #1a2333;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  padding: 5px 18px;
+  background: rgba(18, 2, 2, 0.94);
+  border-bottom: 2px solid #b71515;
+  box-shadow: 0 4px 20px rgba(183, 21, 21, 0.35);
   flex-shrink: 0;
   z-index: 100;
+  min-height: 46px;
 }
 
 .bpd-header-left {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .bpd-btn-back {
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #e0e0e0;
-  padding: 7px 16px;
-  border-radius: 20px;
-  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #f1f2f6;
+  padding: 5px 13px;
+  border-radius: 18px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 13px;
+  font-size: 12px;
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
 .bpd-btn-back:hover {
-  background: rgba(255, 255, 255, 0.18);
-  color: #f1c40f;
-  border-color: #f1c40f;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffd32a;
+  border-color: #ffd32a;
   transform: translateX(-2px);
+}
+
+/* Âm lượng nhạc trên thanh header góc trái (bên phải nút Trang chủ) */
+.bpd-volume-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(30, 5, 5, 0.7);
+  border: 1px solid rgba(255, 75, 75, 0.25);
+  border-radius: 18px;
+  padding: 3px 8px;
+  transition: all 0.2s ease;
+}
+
+.bpd-volume-control:hover {
+  border-color: #ffd32a;
+  background: rgba(45, 8, 8, 0.9);
+}
+
+.bpd-btn-music {
+  background: none;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: white;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.bpd-btn-music:hover {
+  transform: scale(1.18);
+}
+
+.bpd-volume-slider {
+  width: 55px;
+  cursor: pointer;
+  accent-color: #ff4757;
+  height: 4px;
+  background: #2a0505;
+  border-radius: 4px;
+  outline: none;
 }
 
 .bpd-title-group {
   display: flex;
   align-items: baseline;
-  gap: 10px;
+  gap: 8px;
 }
 
 .bpd-title {
-  font-size: 20px;
-  font-weight: 800;
-  color: #f1c40f;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif;
+  font-style: italic;
+  font-size: 21px;
   letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+  background: linear-gradient(180deg, #fff382 0%, #ffc000 50%, #e67e22 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(243, 156, 18, 0.6));
   margin: 0;
 }
 
 .bpd-subtitle {
+  font-family: 'Impact', sans-serif;
   font-size: 11px;
-  color: #a0aec0;
+  color: #ffffff;
+  opacity: 0.8;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
-/* Cụm thông tin thống kê lượt pick */
+/* Cụm thông tin thống kê lượt pick & công cụ */
 .bpd-header-stats {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 9px;
+  flex-wrap: wrap;
 }
 
 .bpd-stat-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 15px;
-  font-size: 12px;
-  font-weight: 500;
-  background: rgba(0, 0, 0, 0.4);
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(25, 4, 4, 0.7);
 }
 
 .bpd-stat-mine {
-  border: 1px solid rgba(52, 152, 219, 0.6);
+  border: 1px solid rgba(52, 152, 219, 0.7);
   color: #74b9ff;
 }
 
 .bpd-stat-enemy {
-  border: 1px solid rgba(231, 76, 60, 0.6);
+  border: 1px solid rgba(231, 76, 60, 0.7);
   color: #ff7675;
 }
 
 .bpd-stat-both {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #b2bec3;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #dcdde1;
 }
 
 .bpd-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   display: inline-block;
 }
 
 .bpd-dot.mine {
   background: #3498db;
-  box-shadow: 0 0 8px #3498db;
+  box-shadow: 0 0 6px #3498db;
 }
 
 .bpd-dot.enemy {
   background: #e74c3c;
-  box-shadow: 0 0 8px #e74c3c;
+  box-shadow: 0 0 6px #e74c3c;
 }
 
 .bpd-dot.both {
   background: #7f8c8d;
 }
 
+/* Nút xóa chọn */
 .bpd-btn-clear {
-  background: rgba(231, 76, 60, 0.15);
-  border: 1px solid rgba(231, 76, 60, 0.4);
+  background: rgba(183, 21, 21, 0.25);
+  border: 1px solid rgba(231, 76, 60, 0.55);
   color: #ff7675;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 15px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .bpd-btn-clear:hover {
-  background: rgba(231, 76, 60, 0.35);
+  background: rgba(231, 76, 60, 0.5);
   color: #ffffff;
   border-color: #ff4757;
 }
 
-/* Khung cuộn Table */
+/* Nút Tăng / Giảm size hình tướng */
+.bpd-size-control-group {
+  display: flex;
+  align-items: center;
+  background: rgba(20, 3, 3, 0.85);
+  border: 1px solid rgba(255, 75, 75, 0.3);
+  border-radius: 14px;
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.bpd-btn-size-step {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid transparent;
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  transition: all 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.bpd-btn-size-step:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: #ffd32a;
+  transform: scale(1.12);
+}
+
+.bpd-btn-size-step:disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
+.bpd-size-value {
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffd32a;
+  min-width: 32px;
+  text-align: center;
+  user-select: none;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Nút quay về size mặc định */
+.bpd-btn-size-reset {
+  background: rgba(230, 126, 34, 0.2);
+  border: 1px solid rgba(230, 126, 34, 0.5);
+  color: #f39c12;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.bpd-btn-size-reset:hover {
+  background: rgba(230, 126, 34, 0.45);
+  color: #ffffff;
+  border-color: #ffd32a;
+  box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+}
+
+.bpd-btn-size-reset.is-default {
+  border-color: rgba(46, 204, 113, 0.6);
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.15);
+}
+
+/* =========================================================
+   BẢNG MA TRẬN TIER LIST - CHUẨN APL / ROV THAILAND
+========================================================= */
+
 .bpd-table-scroll-wrapper {
   flex: 1;
-  overflow: auto;
-  padding: 15px 25px 85px 25px; /* Để trống bên dưới cho cụm nút nhạc / restart */
+  overflow-y: auto;
+  overflow-x: auto;
+  padding: 4px 14px 8px 14px;
+  display: flex;
+  flex-direction: column;
 }
 
 .bpd-table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   min-width: 950px;
-  background: rgba(10, 15, 26, 0.75);
-  border-radius: 10px;
-  border: 1px solid #1a2333;
+  background: #0a0101;
+  border-radius: 6px;
+  border: 2px solid #8b0000;
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.9), 0 0 20px rgba(139, 0, 0, 0.35);
+  overflow: hidden;
 }
 
-/* Header cột */
+/* Góc trái tiêu đề cột TIER */
 .bpd-th-corner {
-  width: 85px;
+  width: 52px;
+  min-width: 52px;
+  max-width: 52px;
   text-align: center;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif;
   font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 2px;
-  color: #f1c40f;
-  background: #0c1220;
-  padding: 12px;
-  border-bottom: 2px solid #233148;
+  font-style: italic;
+  letter-spacing: 1px;
+  color: #ffd32a;
+  background: #190303;
+  padding: 6px 2px;
+  border-bottom: 2px solid #f1c40f;
+  border-right: 1.5px solid #6b0c0c;
   position: sticky;
   top: 0;
   z-index: 40;
 }
 
+/* 5 Cột Lane - Gradient cam-đỏ rực lửa chuẩn mẫu APL */
 .bpd-th-lane {
+  width: calc((100% - 52px) / 5);
   text-align: center;
+  background: linear-gradient(180deg, #ff5722 0%, #e62f0f 50%, #b81400 100%);
+  padding: 6px 4px;
+  border-bottom: 2px solid #f1c40f; /* Viền vàng phân cách với hàng S */
+  border-left: 1.5px solid #800000;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.bpd-lane-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+
+/* Icon thật của các Lane (PNG) */
+.bpd-lane-icon-img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.85));
+}
+
+.bpd-lane-name {
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif;
   font-size: 14px;
-  font-weight: 700;
   letter-spacing: 1.5px;
   color: #ffffff;
-  background: #0c1220;
-  padding: 12px 10px;
-  border-bottom: 2px solid #233148;
-  border-left: 1px solid #1a2333;
-  position: sticky;
-  top: 0;
-  z-index: 40;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
-.bpd-lane-icon {
-  margin-right: 6px;
-  font-size: 16px;
-}
+/* =========================================================
+   CÁC HÀNG BẬC TIER (S, A, B, C, D, SPECIAL)
+========================================================= */
 
 /* Cột Tier bên trái */
 .bpd-tier-badge-cell {
-  width: 85px;
+  width: 52px;
+  min-width: 52px;
+  max-width: 52px;
   text-align: center;
   vertical-align: middle;
-  padding: 10px 6px;
-  border-bottom: 1px solid #1a2333;
+  padding: 3px 2px;
+  background: #0d0101;
 }
 
 .bpd-tier-label {
   display: inline-block;
-  min-width: 44px;
+  min-width: 36px;
+  max-width: 48px;
   text-align: center;
   font-weight: 900;
-  border-radius: 6px;
+  border-radius: 5px;
   user-select: none;
+  box-sizing: border-box;
+}
+
+/* --- TIER S: Toàn bộ hàng có nền VÀNG rực rỡ chuẩn mẫu SS --- */
+.bpd-row-s {
+  background: rgba(255, 215, 0, 0.15) !important;
+}
+
+.tier-badge-s {
+  background: #000000 !important;
+  border-bottom: 2px solid #f1c40f !important;
+  border-right: 1.5px solid rgba(241, 196, 15, 0.5) !important;
 }
 
 .tier-badge-s .bpd-tier-label {
-  background: linear-gradient(135deg, #f1c40f, #e67e22);
-  color: #000;
-  font-size: 18px;
-  padding: 8px 12px;
-  box-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
+  background: linear-gradient(180deg, #fff382 0%, #ffc000 60%, #e67e22 100%) !important;
+  color: #000000 !important;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 900 !important;
+  border: 1px solid #ffffff !important;
+  box-shadow: 0 0 15px rgba(255, 192, 0, 0.8) !important;
+  padding: 5px 8px;
+}
+
+.bpd-row-s .bpd-cell {
+  background: rgba(255, 215, 0, 0.08) !important;
+  border-bottom: 2px solid #f1c40f !important;
+  border-left: 1.5px solid rgba(241, 196, 15, 0.45) !important;
+}
+
+/* --- TIER A: Đỏ cam rực cháy --- */
+.tier-badge-a {
+  border-bottom: 1.5px solid #6b0c0c !important;
+  border-right: 1.5px solid #5a0909 !important;
 }
 
 .tier-badge-a .bpd-tier-label {
-  background: linear-gradient(135deg, #e74c3c, #c0392b);
-  color: #fff;
-  font-size: 18px;
-  padding: 8px 12px;
-  box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+  background: linear-gradient(180deg, #ff4d4d 0%, #d63031 60%, #b71515 100%) !important;
+  color: #ffffff !important;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 900 !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 12px rgba(214, 48, 49, 0.6) !important;
+  padding: 5px 8px;
+}
+
+/* --- TIER B: Cam sáng năng động --- */
+.tier-badge-b {
+  border-bottom: 1.5px solid #6b0c0c !important;
+  border-right: 1.5px solid #5a0909 !important;
 }
 
 .tier-badge-b .bpd-tier-label {
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  color: #fff;
-  font-size: 18px;
-  padding: 8px 12px;
-  box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+  background: linear-gradient(180deg, #ff9f43 0%, #ee5253 60%, #c0392b 100%) !important;
+  color: #ffffff !important;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 900 !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 12px rgba(255, 159, 67, 0.6) !important;
+  padding: 5px 8px;
+}
+
+/* --- TIER C: Đỏ gạch đậm đà --- */
+.tier-badge-c {
+  border-bottom: 1.5px solid #6b0c0c !important;
+  border-right: 1.5px solid #5a0909 !important;
 }
 
 .tier-badge-c .bpd-tier-label {
-  background: linear-gradient(135deg, #2ecc71, #27ae60);
-  color: #000;
-  font-size: 18px;
-  padding: 8px 12px;
-  box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+  background: linear-gradient(180deg, #ff6b6b 0%, #c23616 60%, #8c1d04 100%) !important;
+  color: #ffffff !important;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 900 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 0 12px rgba(194, 54, 22, 0.6) !important;
+  padding: 5px 8px;
+}
+
+/* --- TIER D: Tím than trầm ấm --- */
+.tier-badge-d {
+  border-bottom: 1.5px solid #6b0c0c !important;
+  border-right: 1.5px solid #5a0909 !important;
 }
 
 .tier-badge-d .bpd-tier-label {
-  background: linear-gradient(135deg, #7f8c8d, #95a5a6);
-  color: #fff;
-  font-size: 18px;
-  padding: 8px 12px;
+  background: linear-gradient(180deg, #833471 0%, #481b3d 60%, #2c0e25 100%) !important;
+  color: #ffffff !important;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif !important;
+  font-size: 19px !important;
+  font-weight: 900 !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  padding: 5px 8px;
+}
+
+/* --- TIER SPECIAL: Tím hoàng gia quyền lực --- */
+.tier-badge-special {
+  border-bottom: none !important;
+  border-right: 1.5px solid #5a0909 !important;
 }
 
 .tier-badge-special .bpd-tier-label {
-  background: linear-gradient(135deg, #9b59b6, #8e44ad);
-  color: #fff;
-  font-size: 10px;
+  background: linear-gradient(180deg, #a55eea 0%, #8854d0 60%, #5f27cd 100%) !important;
+  color: #ffffff !important;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif !important;
+  font-size: 8.5px !important;
   letter-spacing: 0.5px;
-  padding: 8px 6px;
-  box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+  font-weight: 900 !important;
+  border: 1px solid rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 12px rgba(165, 94, 234, 0.6) !important;
+  padding: 4px 1px;
+  word-break: break-all;
 }
 
-/* Các ô Cell chứa tướng */
+/* Các ô Cell chứa tướng (A, B, C, D, SPECIAL) */
 .bpd-cell {
-  padding: 8px 10px;
+  width: calc((100% - 52px) / 5);
+  padding: 3px 5px;
   vertical-align: middle;
-  border-bottom: 1px solid #1a2333;
-  border-left: 1px solid #1a2333;
-  background: rgba(8, 12, 20, 0.5);
+  border-bottom: 1.5px solid #6b0c0c;
+  border-left: 1.5px solid #5a0909;
+  background: rgba(14, 3, 3, 0.88);
   position: relative;
 }
 
+.bpd-row-special .bpd-cell {
+  border-bottom: none;
+}
+
 .bpd-empty-cell {
-  color: #334155;
-  font-size: 16px;
+  color: #4a1010;
+  font-size: 14px;
   text-align: center;
   user-select: none;
 }
@@ -755,40 +997,44 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 .bpd-heroes-flex {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 4px;
   align-items: center;
 }
 
-/* Từng icon tướng */
+/* Từng icon tướng - Kích thước được set qua state heroSize */
 .bpd-hero-item {
   position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
   transition: transform 0.15s ease;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .bpd-hero-item:hover {
-  transform: scale(1.12);
+  transform: scale(1.15);
   z-index: 50;
 }
 
 .bpd-hero-item.dropdown-active {
   z-index: 1000 !important;
-  transform: scale(1.12);
+  transform: scale(1.15);
 }
 
 .bpd-hero-img-box {
   width: 100%;
   height: 100%;
-  border-radius: 6px;
+  border-radius: 5px;
   overflow: hidden;
-  background: #0a0e17;
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: #000000;
+  border: 1.5px solid rgba(255, 120, 120, 0.28);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
   transition: all 0.2s ease;
   box-sizing: border-box;
+}
+
+.bpd-row-s .bpd-hero-img-box {
+  border: 1.5px solid rgba(255, 215, 0, 0.45);
 }
 
 .bpd-hero-avatar {
@@ -809,44 +1055,51 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 /* 1. Team mình đã pick */
 .bpd-hero-item.tier-hero-mine .bpd-hero-img-box {
   border: 2px solid #3498db !important;
-  box-shadow: 0 0 12px #3498db, 0 0 20px rgba(52, 152, 219, 0.7), inset 0 0 6px rgba(52, 152, 219, 0.6) !important;
+  box-shadow: 0 0 10px #3498db, 0 0 18px rgba(52, 152, 219, 0.8), inset 0 0 5px rgba(52, 152, 219, 0.6) !important;
 }
 
 /* 2. Team đối thủ đã pick */
 .bpd-hero-item.tier-hero-enemy .bpd-hero-img-box {
   border: 2px solid #e74c3c !important;
-  box-shadow: 0 0 12px #e74c3c, 0 0 20px rgba(231, 76, 60, 0.7), inset 0 0 6px rgba(231, 76, 60, 0.6) !important;
+  box-shadow: 0 0 10px #e74c3c, 0 0 18px rgba(231, 76, 60, 0.8), inset 0 0 5px rgba(231, 76, 60, 0.6) !important;
 }
 
 /* 3. Cả 2 team đều pick -> Trắng đen, viền màu mất luôn */
 .bpd-hero-item.tier-hero-both .bpd-hero-img-box {
-  border: 2px solid #475569 !important;
+  border: 1.5px solid #475569 !important;
   box-shadow: none !important;
 }
 
 .bpd-hero-item.tier-hero-both .bpd-hero-avatar {
-  filter: grayscale(100%) contrast(90%);
-  opacity: 0.38;
+  filter: grayscale(100%) contrast(85%);
+  opacity: 0.35;
 }
 
 /* Dropdown Menu khi nhấn vào tướng */
 .bpd-dropdown-menu {
   position: absolute;
-  top: calc(100% + 7px);
+  top: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);
-  background: #0d1526;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: #150202;
+  border: 1px solid rgba(255, 75, 75, 0.35);
   border-radius: 8px;
-  padding: 8px;
-  min-width: 185px;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 15px rgba(0, 0, 0, 0.5);
+  padding: 7px;
+  min-width: 180px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 15px rgba(183, 21, 21, 0.4);
   z-index: 99999;
   backdrop-filter: blur(12px);
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   animation: bpdDropdownFade 0.18s ease-out;
+}
+
+/* Mở ngược lên trên cho hàng SPECIAL ở đáy bảng */
+.bpd-row-special .bpd-dropdown-menu {
+  top: auto;
+  bottom: calc(100% + 5px);
+  animation: bpdDropdownFadeUp 0.18s ease-out;
 }
 
 @keyframes bpdDropdownFade {
@@ -854,13 +1107,18 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   to { opacity: 1; transform: translate(-50%, 0); }
 }
 
+@keyframes bpdDropdownFadeUp {
+  from { opacity: 0; transform: translate(-50%, 6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
 .bpd-dropdown-header {
-  font-size: 12px;
-  font-weight: 700;
-  color: #f1c40f;
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffd32a;
   text-align: center;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 75, 75, 0.2);
   margin-bottom: 2px;
   white-space: nowrap;
 }
@@ -868,12 +1126,12 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 .bpd-menu-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   width: 100%;
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
+  padding: 7px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   border: 1px solid transparent;
@@ -882,11 +1140,11 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 }
 
 .bpd-btn-check {
-  font-size: 12px;
+  font-size: 11px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 16px;
+  width: 15px;
 }
 
 /* Nút Team mình đã pick (Xanh dương) */
@@ -934,7 +1192,8 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 /* Tối ưu BanPickDraft cho màn hình ngang điện thoại (Mobile Landscape) */
 @media screen and (max-height: 600px) and (orientation: landscape) {
   .bpd-header-bar {
-    padding: 6px 15px;
+    padding: 3px 10px;
+    min-height: 38px;
   }
   .bpd-title {
     font-size: 15px;
@@ -943,38 +1202,62 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
     display: none;
   }
   .bpd-header-stats {
-    gap: 8px;
+    gap: 6px;
   }
   .bpd-stat-badge {
-    padding: 3px 8px;
-    font-size: 11px;
+    padding: 2px 6px;
+    font-size: 10px;
+  }
+  .bpd-size-control-group {
+    padding: 1px 3px;
+  }
+  .bpd-btn-size-step {
+    width: 18px;
+    height: 18px;
+    font-size: 9px;
+  }
+  .bpd-size-value {
+    font-size: 10px;
+    min-width: 28px;
+  }
+  .bpd-btn-size-reset {
+    padding: 3px 7px;
+    font-size: 10px;
   }
   .bpd-table-scroll-wrapper {
-    padding: 8px 10px 70px 10px;
-  }
-  .bpd-hero-item {
-    width: 36px;
-    height: 36px;
+    padding: 4px 6px 6px 6px;
   }
   .bpd-th-corner, .bpd-tier-badge-cell {
-    width: 65px;
-    padding: 6px 4px;
+    width: 44px;
+    min-width: 44px;
+    max-width: 44px;
+    padding: 3px 1px;
+  }
+  .bpd-th-lane, .bpd-cell {
+    width: calc((100% - 44px) / 5);
+  }
+  .bpd-lane-icon-img {
+    width: 16px;
+    height: 16px;
+  }
+  .bpd-lane-name {
+    font-size: 11px;
   }
   .bpd-tier-label {
-    min-width: 32px;
-    font-size: 14px !important;
-    padding: 6px 8px !important;
+    min-width: 26px;
+    font-size: 13px !important;
+    padding: 3px 2px !important;
   }
   .tier-badge-special .bpd-tier-label {
-    font-size: 9px !important;
-    padding: 4px 2px !important;
+    font-size: 7.5px !important;
+    padding: 3px 1px !important;
   }
   .bpd-dropdown-menu {
-    min-width: 165px;
-    padding: 6px;
+    min-width: 160px;
+    padding: 5px;
   }
   .bpd-menu-btn {
-    padding: 6px 8px;
-    font-size: 11px;
+    padding: 5px 7px;
+    font-size: 10px;
   }
 }

@@ -5,11 +5,11 @@
 export const TIERS = ['S', 'A', 'B', 'C', 'D', 'SPECIAL'];
 
 export const LANES = [
-  { id: 'Top', name: 'Top Lane', short: 'Top', icon: '⚔️' },
-  { id: 'Jungle', name: 'Jungle', short: 'Jungle', icon: '🌲' },
-  { id: 'Mid', name: 'Mid Lane', short: 'Mid', icon: '🔮' },
-  { id: 'AD', name: 'AD Lane', short: 'AD', icon: '🏹' },
-  { id: 'SP', name: 'Support', short: 'SP', icon: '🛡️' },
+  { id: 'Top', name: 'Top Lane', short: 'Top', icon: '/assets/lanes/toplane.png' },
+  { id: 'Jungle', name: 'Jungle', short: 'Jungle', icon: '/assets/lanes/junglelane.png' },
+  { id: 'Mid', name: 'Mid Lane', short: 'Mid', icon: '/assets/lanes/midlane.png' },
+  { id: 'AD', name: 'AD Lane', short: 'AD', icon: '/assets/lanes/ad.png' },
+  { id: 'SP', name: 'Support', short: 'SP', icon: '/assets/lanes/sp.png' },
 ];
 
 export const TIER_LIST_DATA = {
