@@ -49,15 +49,17 @@ function App() {
   // Hàm tính toán kích cỡ hình tướng tối ưu để VỪA KHÍT 1 TRANG (không cuộn) trên mọi kích thước màn hình
   const calculateOptimalFitSize = () => {
     try {
-      const w = window.innerWidth || document.documentElement.clientWidth || 1024;
-      const h = window.innerHeight || document.documentElement.clientHeight || 768;
+      // Dùng visualViewport để lấy chính xác chiều cao khả dụng trên iPhone/Safari khi thanh URL đang hiển thị
+      const vv = window.visualViewport;
+      const w = (vv ? vv.width : window.innerWidth) || document.documentElement.clientWidth || 1024;
+      const h = (vv ? vv.height : window.innerHeight) || document.documentElement.clientHeight || 768;
       
       const isCompact = w < 768 || h < 600;
       const headerH = isCompact ? 38 : 46;
       const tableHeaderH = isCompact ? 26 : 34;
       const paddingH = isCompact ? 10 : 18;
-      // Trừ thêm 14px đệm an toàn cho thanh trình duyệt, thanh điều hướng và viền bảng
-      const availableH = Math.max(120, h - headerH - tableHeaderH - paddingH - 14);
+      // Trừ thêm 18px đệm an toàn cho thanh trình duyệt Safari (URL bar), safe-area-inset và viền bảng
+      const availableH = Math.max(90, h - headerH - tableHeaderH - paddingH - 18);
       
       const tierColW = isCompact ? 38 : 52;
       const laneColW = Math.max(50, (w - (isCompact ? 12 : 28) - tierColW) / 5);
@@ -111,6 +113,8 @@ function App() {
     return false;
   });
 
+  const [showIOSPrompt, setShowIOSPrompt] = useState(false);
+
   // Hàm bật/tắt toàn màn hình (Fullscreen) hỗ trợ đa trình duyệt trên cả PC và Mobile
   const toggleFullscreen = () => {
     try {
@@ -122,6 +126,22 @@ function App() {
         doc.mozFullScreenElement ||
         doc.msFullscreenElement
       );
+
+      // Kiểm tra nếu thiết bị hỗ trợ API Fullscreen (Android, PC, Mac, iPad)
+      const hasFullscreenSupport = !!(
+        docEl.requestFullscreen ||
+        docEl.webkitRequestFullscreen ||
+        docEl.mozRequestFullScreen ||
+        docEl.msRequestFullscreen
+      );
+
+      // Riêng trên iPhone (iOS Safari), Apple chặn API requestFullscreen trên trang web
+      if (!hasFullscreenSupport) {
+        setShowIOSPrompt(true);
+        // Cuộn nhẹ để hỗ trợ Safari thu nhỏ thanh URL
+        window.scrollTo({ top: 1, behavior: 'smooth' });
+        return;
+      }
 
       if (!isFull) {
         if (docEl.requestFullscreen) {
@@ -298,6 +318,7 @@ function App() {
         <span className="btn-restart-icon">🔄</span>
         <span className="btn-restart-text">Khởi động lại</span>
       </button>
+      {showIOSPrompt && iosPromptModalUI}
     </div>
   );
 
@@ -522,22 +543,34 @@ function App() {
     };
   }, []);
 
-  // Tự động căn chỉnh kích cỡ hình tướng khi xoay ngang/dọc thiết bị di động
+  // Tự động căn chỉnh kích cỡ hình tướng khi xoay ngang/dọc thiết bị hoặc khi thanh URL Safari co giãn
   useEffect(() => {
     if (!showBanPickDraft) return;
-    let lastW = window.innerWidth;
+    let lastW = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+    let lastH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+
     const handleOrientationOrResize = () => {
-      const curW = window.innerWidth;
-      if (Math.abs(curW - lastW) > 60) {
+      const curW = window.visualViewport ? window.visualViewport.width : window.innerWidth;
+      const curH = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      if (Math.abs(curW - lastW) > 25 || Math.abs(curH - lastH) > 25) {
         lastW = curW;
+        lastH = curH;
         setHeroSize(calculateOptimalFitSize());
       }
     };
+
     window.addEventListener('resize', handleOrientationOrResize);
     window.addEventListener('orientationchange', handleOrientationOrResize);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleOrientationOrResize);
+    }
+
     return () => {
       window.removeEventListener('resize', handleOrientationOrResize);
       window.removeEventListener('orientationchange', handleOrientationOrResize);
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', handleOrientationOrResize);
+      }
     };
   }, [showBanPickDraft]);
 
@@ -606,6 +639,42 @@ function App() {
     setAnalysisResult(null);
     setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
   };
+
+  // Giao diện hướng dẫn bật Toàn Màn Hình chuẩn cho iPhone (iOS Safari)
+  const iosPromptModalUI = (
+    <div className="ios-prompt-backdrop" onClick={() => setShowIOSPrompt(false)}>
+      <div className="ios-prompt-modal" onClick={(e) => e.stopPropagation()}>
+        <div className="ios-prompt-header">
+          <div className="ios-prompt-title-wrap">
+            <span className="ios-prompt-icon">📱</span>
+            <h3>TOÀN MÀN HÌNH TRÊN IPHONE</h3>
+          </div>
+          <button className="ios-prompt-close" onClick={() => setShowIOSPrompt(false)}>✕</button>
+        </div>
+        <div className="ios-prompt-body">
+          <p className="ios-prompt-note">
+            Apple <strong>Safari trên iPhone</strong> chặn tính năng bật Fullscreen trực tiếp bằng nút bấm trên trang web.
+          </p>
+          <div className="ios-prompt-guide-box">
+            <h4>💡 Cách mở Toàn Màn Hình 100% (Ẩn sạch thanh URL):</h4>
+            <ol>
+              <li>Bấm vào biểu tượng <strong>Chia sẻ (icon ⎋ hoặc [↑])</strong> ở thanh dưới cùng Safari.</li>
+              <li>Cuộn xuống chọn <strong>"Thêm vào MH chính"</strong> (<em>Add to Home Screen</em>).</li>
+              <li>Mở icon <strong>AOV Coach</strong> ngoài Màn hình chính.</li>
+            </ol>
+            <p className="ios-prompt-tip">
+              ⭐ Web sẽ chạy <strong>tràn viền 100%</strong> cực mượt như ứng dụng thật, hoàn toàn không bị thanh URL che khuất!
+            </p>
+          </div>
+        </div>
+        <div className="ios-prompt-footer">
+          <button className="ios-prompt-btn-confirm" onClick={() => setShowIOSPrompt(false)}>
+            ĐÃ HIỂU
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   // === MÀN HÌNH: BAN PICK DRAFT (TIER LIST THEO LANE) ===
   if (showBanPickDraft) {
@@ -807,6 +876,7 @@ function App() {
             </table>
           </div>
         </div>
+        {showIOSPrompt && iosPromptModalUI}
       </>
     );
   }

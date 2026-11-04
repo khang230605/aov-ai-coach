@@ -539,18 +539,28 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   border-color: #ffd32a;
 }
 
-/* Container chính của BanPickDraft - Giao diện rực lửa APL Esports */
+/* Container chính của BanPickDraft - Giao diện rực lửa APL Esports (Tối ưu cho cả iOS Safari) */
 .bpd-screen-container {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
   width: 100vw;
+  height: 100%;
   height: 100vh;
+  height: 100dvh; /* Dynamic viewport: Tự động co theo thanh URL Safari trên iPhone */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: max(2px, env(safe-area-inset-bottom, 2px));
+  padding-left: max(4px, env(safe-area-inset-left, 4px));
+  padding-right: max(4px, env(safe-area-inset-right, 4px));
   background: radial-gradient(ellipse at 50% 20%, #4a0707 0%, #260202 45%, #100101 75%, #050000 100%);
   color: white;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  box-sizing: border-box;
   z-index: 500;
 }
 
@@ -1517,4 +1527,176 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   .bpd-stat-both {
     display: none !important;
   }
+}
+
+/* =========================================================
+   📱 MODAL HƯỚNG DẪN FULLSCREEN CHO IPHONE (IOS SAFARI)
+========================================================= */
+
+.ios-prompt-backdrop {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(8px);
+  z-index: 999999 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  box-sizing: border-box;
+  animation: iosPromptFade 0.2s ease-out;
+}
+
+@keyframes iosPromptFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.ios-prompt-modal {
+  background: linear-gradient(180deg, #220505 0%, #120202 100%);
+  border: 1.5px solid #ff4757;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9), 0 0 25px rgba(231, 76, 60, 0.4);
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: iosModalZoom 0.22s ease-out;
+}
+
+@keyframes iosModalZoom {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.ios-prompt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: rgba(45, 6, 6, 0.95);
+  border-bottom: 1px solid rgba(255, 75, 75, 0.35);
+}
+
+.ios-prompt-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ios-prompt-icon {
+  font-size: 16px;
+}
+
+.ios-prompt-header h3 {
+  margin: 0;
+  font-family: 'Impact', 'Segoe UI Black', Arial Black, sans-serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: #ffd32a;
+}
+
+.ios-prompt-close {
+  background: none;
+  border: none;
+  color: #a4b0be;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.2s;
+  line-height: 1;
+}
+
+.ios-prompt-close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.ios-prompt-body {
+  padding: 10px 14px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: #f1f2f6;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.ios-prompt-note {
+  margin: 0 0 8px 0;
+  color: #dcdde1;
+  font-size: 11px;
+}
+
+.ios-prompt-guide-box {
+  background: rgba(30, 4, 4, 0.85);
+  border: 1px solid rgba(243, 156, 18, 0.45);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.ios-prompt-guide-box h4 {
+  margin: 0 0 6px 0;
+  color: #f1c40f;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.ios-prompt-guide-box ol {
+  margin: 0 0 6px 0;
+  padding-left: 18px;
+  font-size: 11px;
+  color: #ffffff;
+}
+
+.ios-prompt-guide-box li {
+  margin-bottom: 3px;
+}
+
+.ios-share-icon {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0 4px;
+  border-radius: 3px;
+  font-weight: 900;
+}
+
+.ios-prompt-tip {
+  margin: 0;
+  color: #2ecc71;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.ios-prompt-footer {
+  padding: 8px 14px;
+  display: flex;
+  justify-content: flex-end;
+  background: rgba(20, 3, 3, 0.7);
+  border-top: 1px solid rgba(255, 75, 75, 0.2);
+}
+
+.ios-prompt-btn-confirm {
+  background: linear-gradient(135deg, #e67e22, #b71515);
+  border: 1px solid rgba(255, 204, 0, 0.6);
+  color: #ffffff;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 5px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+}
+
+.ios-prompt-btn-confirm:hover {
+  transform: scale(1.04);
+  border-color: #ffd32a;
 }
