@@ -129,7 +129,7 @@ function App() {
       const confirmReset = window.confirm("Bạn có chắc chắn muốn khởi động lại và xóa toàn bộ dữ liệu cấm chọn hiện tại?");
       if (!confirmReset) return;
     }
-    
+
     // Xóa toàn bộ dữ liệu cấm chọn trong LocalStorage
     localStorage.removeItem('aov_inSeries');
     localStorage.removeItem('aov_gameNumber');
@@ -167,16 +167,16 @@ function App() {
       <button onClick={toggleMusic} className="btn-music" title={isMusicPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền'}>
         {isMusicPlaying ? '🔊' : '🔇'}
       </button>
-      <input 
-        type="range" min="0" max="1" step="0.05" 
+      <input
+        type="range" min="0" max="1" step="0.05"
         value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))}
         className="volume-slider"
         title="Âm lượng nhạc nền"
       />
       <div className="control-divider"></div>
-      <button 
-        onClick={handleRestartApp} 
-        className="btn-restart" 
+      <button
+        onClick={handleRestartApp}
+        className="btn-restart"
         title="Khởi động lại: Quay về trang đầu và xóa sạch dữ liệu trận đấu"
       >
         <span className="btn-restart-icon">🔄</span>
@@ -216,17 +216,17 @@ function App() {
     return `/assets/heroes/${keyword}.jpg`;
   };
 
-    const filteredHeroes = heroesData.filter(hero => {
-        // 1. Kiểm tra từ khóa tìm kiếm
-        const matchSearch = hero.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                            hero.keyword.toLowerCase().includes(searchTerm.toLowerCase());
-        
-        // 2. Kiểm tra Role
-        // Nếu chọn "Tất cả" thì luôn đúng. Nếu chọn Role cụ thể, kiểm tra mảng hero.roles có chứa Role đó không.
-        const matchRole = selectedRole === "Tất cả" || (hero.roles && hero.roles.includes(selectedRole));
+  const filteredHeroes = heroesData.filter(hero => {
+    // 1. Kiểm tra từ khóa tìm kiếm
+    const matchSearch = hero.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      hero.keyword.toLowerCase().includes(searchTerm.toLowerCase());
 
-        return matchSearch && matchRole;
-    });
+    // 2. Kiểm tra Role
+    // Nếu chọn "Tất cả" thì luôn đúng. Nếu chọn Role cụ thể, kiểm tra mảng hero.roles có chứa Role đó không.
+    const matchRole = selectedRole === "Tất cả" || (hero.roles && hero.roles.includes(selectedRole));
+
+    return matchSearch && matchRole;
+  });
 
   // --- LOGIC KIỂM TRA TƯỚNG BỊ KHÓA (GLOBAL BAN-PICK) ---
   const isHeroUnavailable = (heroName) => {
@@ -261,9 +261,9 @@ function App() {
       const fetchAi = async () => {
         try {
           const res = await axios.get(`${API_BASE_URL}/draft`, {
-            params: { 
-              your_team: (userSide === 'Blue' ? draftData.bluePicks : draftData.redPicks).join(','), 
-              enemy_team: (userSide === 'Blue' ? draftData.redPicks : draftData.bluePicks).join(','), 
+            params: {
+              your_team: (userSide === 'Blue' ? draftData.bluePicks : draftData.redPicks).join(','),
+              enemy_team: (userSide === 'Blue' ? draftData.redPicks : draftData.bluePicks).join(','),
               bans: [...draftData.blueBans, ...draftData.redBans].join(','),
               your_used: myTeamUsed.join(','),     // Bơm data lịch sử vào đây
               enemy_used: enemyTeamUsed.join(',')  // Bơm data lịch sử vào đây
@@ -289,7 +289,7 @@ function App() {
           const response = await axios.get(`${API_BASE_URL}/analyze`, {
             params: { your_team, enemy_team }
           });
-          
+
           if (response.data.status === 'success') {
             setAnalysisResult(response.data.analysis);
           }
@@ -302,17 +302,17 @@ function App() {
   }, [draftData, userSide, analysisResult]);
 
   const handleSelectHero = (heroName) => {
-    pickSound.currentTime = 0; 
+    pickSound.currentTime = 0;
     pickSound.play().catch(err => console.log("Audio play error", err));
-    
+
     if (isHeroUnavailable(heroName)) return;
-    
+
     const step = DRAFT_STEPS[currentStepIdx];
     if (!step) return;
 
-    const newData = { 
-      bluePicks: [...draftData.bluePicks], redPicks: [...draftData.redPicks], 
-      blueBans: [...draftData.blueBans], redBans: [...draftData.redBans] 
+    const newData = {
+      bluePicks: [...draftData.bluePicks], redPicks: [...draftData.redPicks],
+      blueBans: [...draftData.blueBans], redBans: [...draftData.redBans]
     };
 
     if (step.type === 'BAN') {
@@ -326,7 +326,7 @@ function App() {
     setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
   };
 
-// --- CÁC HÀM ĐIỀU KHIỂN BO ĐẤU ---
+  // --- CÁC HÀM ĐIỀU KHIỂN BO ĐẤU ---
   // --- CÁC HÀM XỬ LÝ BAN PICK DRAFT ---
   const handleHeroDropdownToggle = (keyword, e) => {
     e.stopPropagation();
@@ -391,7 +391,7 @@ function App() {
 
   const handleStartSeries = () => {
     setInSeries(true); // Chuyển sang màn hình chọn Xanh/Đỏ
-    
+
     // Kích hoạt nhạc nền ngay lập tức vì người dùng ĐÃ CLICK
     if (!isMusicPlaying) {
       bgmSound.play().then(() => {
@@ -406,7 +406,7 @@ function App() {
     // Lưu lại tướng đã dùng của Game vừa rồi
     const myPicks = userSide === 'Blue' ? draftData.bluePicks : draftData.redPicks;
     const enemyPicks = userSide === 'Blue' ? draftData.redPicks : draftData.bluePicks;
-    
+
     setMyTeamUsed([...myTeamUsed, ...myPicks]);
     setEnemyTeamUsed([...enemyTeamUsed, ...enemyPicks]);
 
@@ -416,12 +416,12 @@ function App() {
     setUserSide(null);
     setAnalysisResult(null);
     setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
-    
+
     // Tăng số đếm Game
     setGameNumber(gameNumber + 1);
   };
 
-const handleEndSeries = () => {
+  const handleEndSeries = () => {
     // Xóa sạch bộ nhớ LocalStorage
     localStorage.removeItem('aov_inSeries');
     localStorage.removeItem('aov_gameNumber');
@@ -470,14 +470,14 @@ const handleEndSeries = () => {
               <button className="bpd-btn-back" onClick={() => { setShowBanPickDraft(false); setActiveDropdownHero(null); }}>
                 ⬅ Trang chủ
               </button>
-              
+
               {/* Nút tăng giảm âm lượng lên trên góc trái, nằm bên phải nút về Trang chủ */}
               <div className="bpd-volume-control" title="Âm lượng nhạc nền">
                 <button onClick={toggleMusic} className="bpd-btn-music" title={isMusicPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền'}>
                   {isMusicPlaying ? '🔊' : '🔇'}
                 </button>
-                <input 
-                  type="range" min="0" max="1" step="0.05" 
+                <input
+                  type="range" min="0" max="1" step="0.05"
                   value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))}
                   className="bpd-volume-slider"
                   title="Âm lượng nhạc nền"
@@ -485,8 +485,7 @@ const handleEndSeries = () => {
               </div>
 
               <div className="bpd-title-group">
-                <h1 className="bpd-title">📋 BAN PICK DRAFT</h1>
-                <span className="bpd-subtitle">Tier List Meta Hiện Tại</span>
+                <h1 className="bpd-title">📋 BAN PICK DRAFT 📋</h1>
               </div>
             </div>
 
@@ -509,8 +508,8 @@ const handleEndSeries = () => {
 
               {/* 1. Nút tăng / giảm size hình tướng */}
               <div className="bpd-size-control-group" title="Tăng / Giảm kích thước hình tướng (các ô, cột và bảng giữ nguyên kích thước)">
-                <button 
-                  className="bpd-btn-size-step" 
+                <button
+                  className="bpd-btn-size-step"
                   onClick={handleDecreaseHeroSize}
                   disabled={heroSize <= MIN_HERO_SIZE}
                   title="Thu nhỏ hình tướng (-2px)"
@@ -518,8 +517,8 @@ const handleEndSeries = () => {
                   ➖
                 </button>
                 <span className="bpd-size-value" title={`Kích cỡ hiện tại: ${heroSize}px`}>{heroSize}px</span>
-                <button 
-                  className="bpd-btn-size-step" 
+                <button
+                  className="bpd-btn-size-step"
                   onClick={handleIncreaseHeroSize}
                   disabled={heroSize >= MAX_HERO_SIZE}
                   title="Phóng to hình tướng (+2px)"
@@ -529,7 +528,7 @@ const handleEndSeries = () => {
               </div>
 
               {/* 2. Nút quay về size mặc định (tất cả tướng nằm trong 1 trang, ko cần scroll) */}
-              <button 
+              <button
                 className={`bpd-btn-size-reset ${heroSize === DEFAULT_HERO_SIZE ? 'is-default' : ''}`}
                 onClick={handleResetHeroSize}
                 title="Quay về size mặc định (tất cả tướng nằm vừa vặn trong 1 trang, không cần cuộn)"
@@ -575,17 +574,17 @@ const handleEndSeries = () => {
                                 const currentState = banPickDraftState[hero.keyword] || { mine: false, enemy: false };
 
                                 return (
-                                  <div 
-                                    key={`${lane.id}-${tier}-${hero.keyword}`} 
+                                  <div
+                                    key={`${lane.id}-${tier}-${hero.keyword}`}
                                     className={`bpd-hero-item ${heroStateClass} ${isDropdownOpen ? 'dropdown-active' : ''}`}
                                     style={{ width: `${heroSize}px`, height: `${heroSize}px` }}
                                     onClick={(e) => handleHeroDropdownToggle(hero.keyword, e)}
                                     title={`${hero.name} (${lane.id} - Tier ${tier})`}
                                   >
                                     <div className="bpd-hero-img-box">
-                                      <img 
-                                        src={hero.avatar} 
-                                        alt={hero.name} 
+                                      <img
+                                        src={hero.avatar}
+                                        alt={hero.name}
                                         className="bpd-hero-avatar"
                                         loading="lazy"
                                       />
@@ -597,14 +596,14 @@ const handleEndSeries = () => {
                                         <div className="bpd-dropdown-header">
                                           <span>{hero.name}</span>
                                         </div>
-                                        <button 
+                                        <button
                                           className={`bpd-menu-btn bpd-btn-pick-mine ${currentState.mine ? 'selected' : ''}`}
                                           onClick={(e) => handleToggleTeamPick(hero.keyword, 'mine', e)}
                                         >
                                           <span className="bpd-btn-check">{currentState.mine ? '✓' : '🔵'}</span>
                                           <span>Team mình đã pick</span>
                                         </button>
-                                        <button 
+                                        <button
                                           className={`bpd-menu-btn bpd-btn-pick-enemy ${currentState.enemy ? 'selected' : ''}`}
                                           onClick={(e) => handleToggleTeamPick(hero.keyword, 'enemy', e)}
                                         >
@@ -678,7 +677,7 @@ const handleEndSeries = () => {
               <p>Luật Global Ban Pick: Tướng đã dùng sẽ bị khóa</p>
               {serverStatusUI}
             </div>
-            
+
             <div className="side-buttons">
               <div className="side-card blue-card" onClick={() => setUserSide('Blue')}>
                 <h2>ĐỘI XANH</h2>
@@ -697,14 +696,14 @@ const handleEndSeries = () => {
   }
 
   const currentStep = DRAFT_STEPS[currentStepIdx] || { label: 'HOÀN TẤT', side: 'NONE' };
-   
+
   return (
     <>
       <div className="rotate-warning">
         <div className="rotate-icon">📱 🔄</div>
         <h2>Vui lòng xoay ngang thiết bị</h2>
       </div>
-    {musicControlUI}
+      {musicControlUI}
       <div className="draft-board">
         <div className="ban-header">
           <div className="ban-side blue">
@@ -735,20 +734,20 @@ const handleEndSeries = () => {
         <div className="main-draft">
           {/* Picks Team Xanh */}
           <div className="pick-column blue-side">
-          {[...Array(5)].map((_, i) => {
+            {[...Array(5)].map((_, i) => {
               const heroName = draftData.bluePicks[i];
               const isActive = currentStep.side === 'Blue' && currentStep.type === 'PICK' && draftData.bluePicks.length === i;
               return (
-              <div key={i} className={`pick-slot ${isActive ? 'active' : ''}`}>
+                <div key={i} className={`pick-slot ${isActive ? 'active' : ''}`}>
                   {heroName ? (
-                  <div className="picked-info">
+                    <div className="picked-info">
                       <img src={getHeroAvatar(heroName)} alt="" />
                       <span>{heroName}</span>
-                  </div>
-                  ) : <div className="placeholder" style={{paddingLeft: '15px', color: '#333'}}>SELECTING...</div>}
-              </div>
+                    </div>
+                  ) : <div className="placeholder" style={{ paddingLeft: '15px', color: '#333' }}>SELECTING...</div>}
+                </div>
               );
-          })}
+            })}
           </div>
 
           <div className="center-panel">
@@ -756,7 +755,7 @@ const handleEndSeries = () => {
               // BẢNG TỔNG KẾT VÀ NÚT ĐIỀU HƯỚNG BO ĐẤU
               <div className="analysis-dashboard">
                 <h2 className="dashboard-title">📊 PHÂN TÍCH ĐỘI HÌNH GAME {gameNumber}</h2>
-                
+
                 <div className="win-rate-section">
                   <div className="team-stat blue-stat">
                     <span className="stat-label">Đội Xanh</span>
@@ -775,7 +774,7 @@ const handleEndSeries = () => {
                   <h3>🗣️ LỜI KHUYÊN TỪ HUẤN LUYỆN VIÊN</h3>
                   <p>{analysisResult.coach_summary}</p>
                 </div>
-                
+
                 {/* NÚT TIẾP TỤC HOẶC KẾT THÚC SERIES */}
                 <div className="action-buttons">
                   <button className="btn-next-game" onClick={handleNextGame}>
@@ -790,49 +789,49 @@ const handleEndSeries = () => {
               // LƯỚI TƯỚNG VÀ GỢI Ý
               <>
                 <div className={`ai-coach-panel ${currentStep.side === userSide ? 'visible' : 'hidden'}`}>
-                    <h3>💡 AI SUGGESTIONS ({currentStep.type})</h3>
-                    <div className="suggest-grid">
+                  <h3>💡 AI SUGGESTIONS ({currentStep.type})</h3>
+                  <div className="suggest-grid">
                     {(currentStep.type === 'PICK' ? suggestions.pick_suggestions : suggestions.ban_suggestions).map((s, i) => (
-                        <div key={i} className="suggest-card" onClick={() => handleSelectHero(s.hero)}>
+                      <div key={i} className="suggest-card" onClick={() => handleSelectHero(s.hero)}>
                         <img src={getHeroAvatar(s.hero)} alt="" />
                         <div className="s-info">
-                            <p className="s-hero">{s.hero}</p>
-                            <p className="s-reason">{s.reason}</p>
-                            <span className="s-score">{s.score}% WR</span>
+                          <p className="s-hero">{s.hero}</p>
+                          <p className="s-reason">{s.reason}</p>
+                          <span className="s-score">{s.score}% WR</span>
                         </div>
-                        </div>
+                      </div>
                     ))}
-                    </div>
+                  </div>
                 </div>
 
                 <div className="search-container">
-                    <input type="text" placeholder="Tìm tên tướng..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" />
+                  <input type="text" placeholder="Tìm tên tướng..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="search-input" />
                 </div>
-                
+
                 {/* THANH LỌC VAI TRÒ (ROLE FILTER) */}
                 <div className="role-filter-container">
-                    {ROLES.map((role) => (
-                        <div 
-                            key={role} 
-                            className={`role-tab ${selectedRole === role ? 'active' : ''}`}
-                            onClick={() => setSelectedRole(role)}
-                        >
-                            {role}
-                        </div>
-                    ))}
+                  {ROLES.map((role) => (
+                    <div
+                      key={role}
+                      className={`role-tab ${selectedRole === role ? 'active' : ''}`}
+                      onClick={() => setSelectedRole(role)}
+                    >
+                      {role}
+                    </div>
+                  ))}
                 </div>
 
                 <div className="hero-grid">
-                    {filteredHeroes.map((hero) => (
-                    <div 
-                        key={hero.id} 
-                        className={`hero-item ${isHeroUnavailable(hero.name) ? 'disabled' : ''}`} 
-                        onClick={() => handleSelectHero(hero.name)}
+                  {filteredHeroes.map((hero) => (
+                    <div
+                      key={hero.id}
+                      className={`hero-item ${isHeroUnavailable(hero.name) ? 'disabled' : ''}`}
+                      onClick={() => handleSelectHero(hero.name)}
                     >
-                        <img src={`/assets/heroes/${hero.keyword.toLowerCase()}.jpg`} alt={hero.name} />
-                        <span>{hero.name}</span>
+                      <img src={`/assets/heroes/${hero.keyword.toLowerCase()}.jpg`} alt={hero.name} />
+                      <span>{hero.name}</span>
                     </div>
-                    ))}
+                  ))}
                 </div>
               </>
             )}
@@ -842,12 +841,12 @@ const handleEndSeries = () => {
           <div className="pick-column red-side">
             {[...Array(5)].map((_, i) => (
               <div key={i} className={`pick-slot ${currentStep.side === 'Red' && currentStep.type === 'PICK' && draftData.redPicks.length === i ? 'active' : ''}`}>
-                 {draftData.redPicks[i] ? (
-                   <div className="picked-info reverse">
-                     <span>{draftData.redPicks[i]}</span>
-                     <img src={getHeroAvatar(draftData.redPicks[i])} alt="hero" />
-                   </div>
-                 ) : <div className="placeholder" style={{paddingRight: '15px', color: '#333'}}>SELECTING...</div>}
+                {draftData.redPicks[i] ? (
+                  <div className="picked-info reverse">
+                    <span>{draftData.redPicks[i]}</span>
+                    <img src={getHeroAvatar(draftData.redPicks[i])} alt="hero" />
+                  </div>
+                ) : <div className="placeholder" style={{ paddingRight: '15px', color: '#333' }}>SELECTING...</div>}
               </div>
             ))}
           </div>
