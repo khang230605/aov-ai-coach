@@ -12,6 +12,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Endpoint cực nhẹ giữ Render không ngủ và kiểm tra kết nối
+@app.get("/")
+@app.get("/health")
+@app.get("/ping")
+@app.head("/ping")
+def health_check():
+    return {"status": "ok", "message": "AOV Coach Backend is alive"}
+
 # Hàm chuẩn hóa tên để so sánh chính xác
 def norm(name):
     return re.sub(r'[^a-z0-9]', '', str(name).lower())

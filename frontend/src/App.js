@@ -4,6 +4,9 @@ import { DRAFT_STEPS } from './constants';
 import './App.css';
 import heroesData from './heroes.json';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://aov-backend-khang.onrender.com';
+const KEEPALIVE_INTERVAL = 13 * 60 * 1000; // 13 phút (an toàn trước mốc 15 phút Render tự ngủ)
+
 const pickSound = new Audio('/assets/sounds/pick.mp3');
 pickSound.volume = 0.7;
 
@@ -36,6 +39,57 @@ function App() {
   const [suggestions, setSuggestions] = useState({ pick_suggestions: [], ban_suggestions: [] });
   const [analysisResult, setAnalysisResult] = useState(() => loadState('aov_analysis', null));
   const [searchTerm, setSearchTerm] = useState("");
+
+  // --- LOGIC GIỮ RENDER KHÔNG NGỦ & KIỂM TRA KẾT NỐI (KEEP-ALIVE HEARTBEAT) ---
+  const [serverStatus, setServerStatus] = useState('checking'); // 'checking' | 'online' | 'waking' | 'offline'
+
+  useEffect(() => {
+    let isMounted = true;
+    let retryTimer = null;
+
+    const pingBackend = async (isInitial = false) => {
+      if (isInitial) setServerStatus('checking');
+      try {
+        await axios.get(`${API_BASE_URL}/ping`, { timeout: 35000 });
+        if (isMounted) setServerStatus('online');
+      } catch (err) {
+        if (isMounted) {
+          setServerStatus('waking');
+          // Nếu đang cold-start trong lần tải đầu, ping lại sau 10 giây để đón khi server thức dậy
+          if (isInitial) {
+            retryTimer = setTimeout(() => pingBackend(false), 10000);
+          }
+        }
+      }
+    };
+
+    // 1. Ping ngay khi vào web để đánh thức server Render sớm nhất
+    pingBackend(true);
+
+    // 2. Gửi request định kỳ mỗi 13-14 phút để Render không bao giờ ngủ khi tab đang mở
+    const keepAliveId = setInterval(() => {
+      pingBackend(false);
+    }, KEEPALIVE_INTERVAL);
+
+    return () => {
+      isMounted = false;
+      clearInterval(keepAliveId);
+      if (retryTimer) clearTimeout(retryTimer);
+    };
+  }, []);
+
+  // UI Huy hiệu hiển thị trạng thái kết nối máy chủ
+  const serverStatusUI = (
+    <div className={`server-status-badge ${serverStatus}`}>
+      <span className="status-dot"></span>
+      <span className="status-text">
+        {serverStatus === 'online' && 'Máy chủ AI: Sẵn sàng'}
+        {serverStatus === 'waking' && 'Máy chủ AI: Đang khởi động (~30s)...'}
+        {serverStatus === 'checking' && 'Máy chủ AI: Đang kết nối...'}
+        {serverStatus === 'offline' && 'Máy chủ AI: Mất kết nối'}
+      </span>
+    </div>
+  );
 
   // --- LOGIC NHẠC NỀN ---
   const [volume, setVolume] = useState(() => loadState('aov_volume', 0.5));
@@ -143,7 +197,7 @@ function App() {
     if (userSide && currentStep && currentStep.side === userSide) {
       const fetchAi = async () => {
         try {
-          const res = await axios.get(`https://aov-backend-khang.onrender.com/draft`, {
+          const res = await axios.get(`${API_BASE_URL}/draft`, {
             params: { 
               your_team: (userSide === 'Blue' ? draftData.bluePicks : draftData.redPicks).join(','), 
               enemy_team: (userSide === 'Blue' ? draftData.redPicks : draftData.bluePicks).join(','), 
@@ -169,7 +223,7 @@ function App() {
           const your_team = userSide === 'Blue' ? draftData.bluePicks.join(',') : draftData.redPicks.join(',');
           const enemy_team = userSide === 'Blue' ? draftData.redPicks.join(',') : draftData.bluePicks.join(',');
 
-          const response = await axios.get('https://aov-backend-khang.onrender.com/analyze', {
+          const response = await axios.get(`${API_BASE_URL}/analyze`, {
             params: { your_team, enemy_team }
           });
           
@@ -280,6 +334,7 @@ const handleEndSeries = () => {
             <div className="logo-container">
               <h1>AOV COACH - KHANG's AI</h1>
               <p>Hệ thống phân tích & cấm chọn Liên Quân Mobile</p>
+              {serverStatusUI}
             </div>
             <button className="btn-create-match" onClick={handleStartSeries}>
               BẮT ĐẦU TRẬN ĐẤU
@@ -304,6 +359,7 @@ const handleEndSeries = () => {
             <div className="logo-container">
               <h1>GAME {gameNumber}</h1>
               <p>Luật Global Ban Pick: Tướng đã dùng sẽ bị khóa</p>
+              {serverStatusUI}
             </div>
             
             <div className="side-buttons">
@@ -343,7 +399,10 @@ const handleEndSeries = () => {
             ))}
           </div>
           <div className="status-center">
-            <div className="phase-label">GAME {gameNumber} - {currentStep.label}</div>
+            <div className="phase-label">
+              GAME {gameNumber} - {currentStep.label}
+              <span className={`draft-server-indicator ${serverStatus}`} title={`Trạng thái máy chủ AI: ${serverStatus}`}></span>
+            </div>
             <div className="timer">15</div>
           </div>
           <div className="ban-side red">
