@@ -454,3 +454,28 @@ python train.py
    - Thêm kiểu dáng phát sáng và hoạt ảnh cho `.server-status-badge` và `.draft-server-indicator`.
 4. **`.github/workflows/keep_alive.yml`:**
    - Tạo mới file cấu hình GitHub Actions cron `*/14 * * * *` tự động curl `https://aov-backend-khang.onrender.com/ping`.
+
+### 9.4. Bổ sung tính năng Khởi động lại (Restart / Reset Data)
+* **Vị trí hiển thị:** Nằm ngay cạnh thanh trượt âm lượng nhạc trong cụm điều khiển cố định ở góc dưới màn hình (`.music-control`).
+* **Hành vi xử lý:**
+  - Nếu người dùng đang trong trận/series: Hiển thị hộp thoại xác nhận `window.confirm` để tránh ấn nhầm làm mất tiến trình cấm chọn.
+  - Xóa sạch toàn bộ các key lưu trữ của AOV Coach trong `localStorage`.
+  - Đưa toàn bộ State về ban đầu (`inSeries = false`, `userSide = null`, `gameNumber = 1`, `myTeamUsed = []`, `enemyTeamUsed = []`, v.v.), ngay lập tức đưa người dùng trở lại màn hình bắt đầu.
+  - Tối ưu giao diện: Thiết kế nút đỏ nổi bật phong cách Esports; trên màn hình điện thoại ngang tự động ẩn chữ `Khởi động lại` và chỉ hiển thị icon xoay `🔄` để tiết kiệm tối đa diện tích.
+
+### 9.5. Cập nhật tướng mới: Tamyn (Bán thần Quang minh)
+* **Thông tin tướng:**
+  - Tên hiển thị: **Tamyn**
+  - Keyword: `tamyn`
+  - Ảnh đại diện: `frontend/public/assets/heroes/tamyn.jpg`
+  - Vai trò (Roles): `["Đấu sĩ", "Sát thủ"]`
+  - Vị trí đường (Lanes): `Top (Caesar)`, `Jung (Rừng)`
+  - Phong cách thi đấu: **Càn lướt (Dive)** cơ động cao
+* **Đồng bộ hệ thống dữ liệu:**
+  1. **`backend/data/heroes.json` & `frontend/src/heroes.json`:** Nâng tổng số tướng trong từ điển lên **127 tướng**, đặt Tamyn ở vị trí ưu tiên đầu danh sách.
+  2. **`backend/data/meta_priority.json`:** Xếp loại S-Tier Meta cho tướng mới (Pick Rate: 36.5%, Ban Rate: 26.0%, Win Rate: 54.2%, Meta Score: 89.6).
+  3. **`backend/data/knowledge_base.json`:**
+     - **Khắc chế (Counter):** Khắc chế mạnh các tướng cấu rỉa / thiếu cơ động (Yue, Iggy, Capheny, Tel'Annas, Hayate).
+     - **Bị khắc chế:** Dễ bị khống chế cứng bởi Aleister, Arum, Omen, Baldum.
+     - **Phối hợp (Synergy):** Cặp bài trùng cực mạnh cùng các trợ thủ tạo tốc chạy / hồi phục / hồi chiêu (Aya, Rouie, Dolia, Zip, Helen).
+  4. **`backend/preprocess.py`:** Thêm ánh xạ tên quốc tế `'machao': 'tamyn'` để tương thích dữ liệu giải đấu chuyển giao từ Vương Giả Vinh Diệu.

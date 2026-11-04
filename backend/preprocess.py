@@ -26,7 +26,7 @@ def create_ml_dataset():
     # Bổ sung thủ công một số tướng có tên quốc tế khác tên Garena Việt Nam
     # (Dựa trên file HTML bạn gửi lúc trước)
     custom_mapping = {
-        'doria': 'dolia',
+        'doria': 'dolia', 'machao': 'tamyn', 'ma chao': 'tamyn',
         'kuangtie': 'biron',
         'ailin': 'erin',
         'ybneth': 'ybneth', # Đề phòng dấu nháy đơn

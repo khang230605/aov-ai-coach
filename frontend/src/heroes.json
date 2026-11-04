@@ -1,5 +1,14 @@
 [
     {
+        "keyword": "tamyn",
+        "name": "Tamyn",
+        "roles": [
+            "Đấu sĩ",
+            "Sát thủ"
+        ],
+        "avatar": "https://lienquan.garena.vn/wp-content/uploads/2026/10/tamyn.jpg"
+    },
+    {
         "keyword": "dyadia",
         "name": "Dyadia",
         "roles": [

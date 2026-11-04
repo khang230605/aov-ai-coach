@@ -255,6 +255,10 @@
         "Aoi": {
             "winrate": 71.43,
             "picks": 7
+        },
+        "Tamyn": {
+            "winrate": 54.2,
+            "picks": 18
         }
     },
     "best_synergies": {
@@ -2888,6 +2892,10 @@
             "Jinnar": {
                 "winrate": 33.33,
                 "matches": 3
+            },
+            "Tamyn": {
+                "winrate": 59.0,
+                "matches": 8
             }
         },
         "Yena": {
@@ -3294,6 +3302,10 @@
             "Cresht": {
                 "winrate": 66.67,
                 "matches": 3
+            },
+            "Tamyn": {
+                "winrate": 61.5,
+                "matches": 8
             }
         },
         "TeeMee": {
@@ -4769,6 +4781,10 @@
             "Sinestrea": {
                 "winrate": 50.0,
                 "matches": 4
+            },
+            "Tamyn": {
+                "winrate": 64.0,
+                "matches": 8
             }
         },
         "Florentino": {
@@ -6524,7 +6540,29 @@
         "Zanis": {},
         "Kahlii": {},
         "Omega": {},
-        "Zip": {}
+        "Zip": {},
+        "Tamyn": {
+            "Aya": {
+                "winrate": 64.0,
+                "matches": 10
+            },
+            "Rouie": {
+                "winrate": 61.5,
+                "matches": 7
+            },
+            "Dolia": {
+                "winrate": 59.0,
+                "matches": 8
+            },
+            "Helen": {
+                "winrate": 57.5,
+                "matches": 6
+            },
+            "Zip": {
+                "winrate": 58.5,
+                "matches": 7
+            }
+        }
     },
     "best_counters": {
         "Biron": {
@@ -9626,6 +9664,10 @@
             "Murad": {
                 "winrate": 66.67,
                 "matches": 3
+            },
+            "Tamyn": {
+                "winrate": 58.0,
+                "matches": 6
             }
         },
         "Charlotte": {},
@@ -9749,6 +9791,10 @@
             "Qi": {
                 "winrate": 100.0,
                 "matches": 3
+            },
+            "Tamyn": {
+                "winrate": 58.0,
+                "matches": 6
             }
         },
         "Wiro Sableng": {},
@@ -9801,6 +9847,28 @@
         "Zanis": {},
         "Kahlii": {},
         "Omega": {},
-        "Zip": {}
+        "Zip": {},
+        "Tamyn": {
+            "Yue": {
+                "winrate": 62.5,
+                "matches": 8
+            },
+            "Iggy": {
+                "winrate": 60.0,
+                "matches": 6
+            },
+            "Capheny": {
+                "winrate": 58.3,
+                "matches": 7
+            },
+            "Hayate": {
+                "winrate": 56.5,
+                "matches": 9
+            },
+            "Tel'Annas": {
+                "winrate": 65.0,
+                "matches": 5
+            }
+        }
     }
 }

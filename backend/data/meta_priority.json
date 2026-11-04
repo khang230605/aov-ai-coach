@@ -520,5 +520,11 @@
     "ban_rate": 0.0,
     "win_rate": 100.0,
     "meta_score": 50.35
+  },
+  "Tamyn": {
+    "pick_rate": 36.5,
+    "ban_rate": 26.0,
+    "win_rate": 54.2,
+    "meta_score": 89.6
   }
 }
