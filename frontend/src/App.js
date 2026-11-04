@@ -113,9 +113,17 @@ function App() {
     return false;
   });
 
-  const [showIOSPrompt, setShowIOSPrompt] = useState(false);
+  // Nhận diện thiết bị iOS (iPhone, iPad, iPod) để xóa hẳn nút Fullscreen không hoạt động trên iOS
+  const isIOS = () => {
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
+    return (
+      /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)
+    );
+  };
+  const isIOSDevice = isIOS();
 
-  // Hàm bật/tắt toàn màn hình (Fullscreen) hỗ trợ đa trình duyệt trên cả PC và Mobile
+  // Hàm bật/tắt toàn màn hình (Fullscreen) cho Android và PC
   const toggleFullscreen = () => {
     try {
       const doc = document;
@@ -126,22 +134,6 @@ function App() {
         doc.mozFullScreenElement ||
         doc.msFullscreenElement
       );
-
-      // Kiểm tra nếu thiết bị hỗ trợ API Fullscreen (Android, PC, Mac, iPad)
-      const hasFullscreenSupport = !!(
-        docEl.requestFullscreen ||
-        docEl.webkitRequestFullscreen ||
-        docEl.mozRequestFullScreen ||
-        docEl.msRequestFullscreen
-      );
-
-      // Riêng trên iPhone (iOS Safari), Apple chặn API requestFullscreen trên trang web
-      if (!hasFullscreenSupport) {
-        setShowIOSPrompt(true);
-        // Cuộn nhẹ để hỗ trợ Safari thu nhỏ thanh URL
-        window.scrollTo({ top: 1, behavior: 'smooth' });
-        return;
-      }
 
       if (!isFull) {
         if (docEl.requestFullscreen) {
@@ -300,15 +292,19 @@ function App() {
         className="volume-slider"
         title="Âm lượng nhạc nền"
       />
-      <div className="control-divider"></div>
-      <button
-        onClick={toggleFullscreen}
-        className={`btn-fullscreen ${isFullscreen ? 'is-fullscreen' : ''}`}
-        title={isFullscreen ? 'Thu nhỏ màn hình (Esc)' : 'Toàn màn hình: Tối ưu không gian hiển thị'}
-      >
-        <span className="btn-fullscreen-icon">{isFullscreen ? '🗗' : '⛶'}</span>
-        <span className="btn-fullscreen-text">{isFullscreen ? 'Thu nhỏ' : 'Full'}</span>
-      </button>
+      {!isIOSDevice && (
+        <>
+          <div className="control-divider"></div>
+          <button
+            onClick={toggleFullscreen}
+            className={`btn-fullscreen ${isFullscreen ? 'is-fullscreen' : ''}`}
+            title={isFullscreen ? 'Thu nhỏ màn hình (Esc)' : 'Toàn màn hình: Tối ưu không gian hiển thị'}
+          >
+            <span className="btn-fullscreen-icon">{isFullscreen ? '🗗' : '⛶'}</span>
+            <span className="btn-fullscreen-text">{isFullscreen ? 'Thu nhỏ' : 'Full'}</span>
+          </button>
+        </>
+      )}
       <div className="control-divider"></div>
       <button
         onClick={handleRestartApp}
@@ -318,7 +314,6 @@ function App() {
         <span className="btn-restart-icon">🔄</span>
         <span className="btn-restart-text">Khởi động lại</span>
       </button>
-      {showIOSPrompt && iosPromptModalUI}
     </div>
   );
 
@@ -640,42 +635,6 @@ function App() {
     setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
   };
 
-  // Giao diện hướng dẫn bật Toàn Màn Hình chuẩn cho iPhone (iOS Safari)
-  const iosPromptModalUI = (
-    <div className="ios-prompt-backdrop" onClick={() => setShowIOSPrompt(false)}>
-      <div className="ios-prompt-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="ios-prompt-header">
-          <div className="ios-prompt-title-wrap">
-            <span className="ios-prompt-icon">📱</span>
-            <h3>TOÀN MÀN HÌNH TRÊN IPHONE</h3>
-          </div>
-          <button className="ios-prompt-close" onClick={() => setShowIOSPrompt(false)}>✕</button>
-        </div>
-        <div className="ios-prompt-body">
-          <p className="ios-prompt-note">
-            Apple <strong>Safari trên iPhone</strong> chặn tính năng bật Fullscreen trực tiếp bằng nút bấm trên trang web.
-          </p>
-          <div className="ios-prompt-guide-box">
-            <h4>💡 Cách mở Toàn Màn Hình 100% (Ẩn sạch thanh URL):</h4>
-            <ol>
-              <li>Bấm vào biểu tượng <strong>Chia sẻ (icon ⎋ hoặc [↑])</strong> ở thanh dưới cùng Safari.</li>
-              <li>Cuộn xuống chọn <strong>"Thêm vào MH chính"</strong> (<em>Add to Home Screen</em>).</li>
-              <li>Mở icon <strong>AOV Coach</strong> ngoài Màn hình chính.</li>
-            </ol>
-            <p className="ios-prompt-tip">
-              ⭐ Web sẽ chạy <strong>tràn viền 100%</strong> cực mượt như ứng dụng thật, hoàn toàn không bị thanh URL che khuất!
-            </p>
-          </div>
-        </div>
-        <div className="ios-prompt-footer">
-          <button className="ios-prompt-btn-confirm" onClick={() => setShowIOSPrompt(false)}>
-            ĐÃ HIỂU
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-
   // === MÀN HÌNH: BAN PICK DRAFT (TIER LIST THEO LANE) ===
   if (showBanPickDraft) {
     // Đếm số lượng tướng đã pick
@@ -776,15 +735,17 @@ function App() {
                 <span className="bpd-reset-text">Vừa 1 trang</span>
               </button>
 
-              {/* 3. Nút bật/tắt toàn màn hình (Full Screen) */}
-              <button
-                className={`bpd-btn-fullscreen ${isFullscreen ? 'is-fullscreen' : ''}`}
-                onClick={toggleFullscreen}
-                title={isFullscreen ? 'Thu nhỏ màn hình (Esc)' : 'Toàn màn hình: Tối đa hóa chiều rộng và chiều cao thiết bị'}
-              >
-                <span className="bpd-fullscreen-icon">{isFullscreen ? '🗗' : '⛶'}</span>
-                <span className="bpd-fullscreen-text">{isFullscreen ? 'Thu nhỏ' : 'Full'}</span>
-              </button>
+              {/* 3. Nút bật/tắt toàn màn hình (Full Screen) - Ẩn hoàn toàn trên iOS */}
+              {!isIOSDevice && (
+                <button
+                  className={`bpd-btn-fullscreen ${isFullscreen ? 'is-fullscreen' : ''}`}
+                  onClick={toggleFullscreen}
+                  title={isFullscreen ? 'Thu nhỏ màn hình (Esc)' : 'Toàn màn hình: Tối đa hóa chiều rộng và chiều cao thiết bị'}
+                >
+                  <span className="bpd-fullscreen-icon">{isFullscreen ? '🗗' : '⛶'}</span>
+                  <span className="bpd-fullscreen-text">{isFullscreen ? 'Thu nhỏ' : 'Full'}</span>
+                </button>
+              )}
             </div>
           </div>
 
@@ -876,7 +837,6 @@ function App() {
             </table>
           </div>
         </div>
-        {showIOSPrompt && iosPromptModalUI}
       </>
     );
   }
