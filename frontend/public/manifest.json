@@ -1,11 +1,22 @@
 {
   "short_name": "AOV Coach",
   "name": "AOV Coach - Liên Quân AI Ban Pick",
-  "icons": [],
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
   "orientation": "landscape",
   "theme_color": "#120202",
   "background_color": "#0d0101"
 }
-
