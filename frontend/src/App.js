@@ -99,6 +99,55 @@ function App() {
   const [showBanPickDraft, setShowBanPickDraft] = useState(() => loadState('aov_showBanPickDraft', false));
   const [banPickDraftState, setBanPickDraftState] = useState(() => loadState('aov_banPickDraftState', {}));
   const [activeDropdownHero, setActiveDropdownHero] = useState(null);
+  const [isFullscreen, setIsFullscreen] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return !!(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
+    }
+    return false;
+  });
+
+  // Hàm bật/tắt toàn màn hình (Fullscreen) hỗ trợ đa trình duyệt trên cả PC và Mobile
+  const toggleFullscreen = () => {
+    try {
+      const doc = document;
+      const docEl = document.documentElement;
+      const isFull = !!(
+        doc.fullscreenElement ||
+        doc.webkitFullscreenElement ||
+        doc.mozFullScreenElement ||
+        doc.msFullscreenElement
+      );
+
+      if (!isFull) {
+        if (docEl.requestFullscreen) {
+          docEl.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
+        } else if (docEl.webkitRequestFullscreen) {
+          docEl.webkitRequestFullscreen();
+        } else if (docEl.mozRequestFullScreen) {
+          docEl.mozRequestFullScreen();
+        } else if (docEl.msRequestFullscreen) {
+          docEl.msRequestFullscreen();
+        }
+      } else {
+        if (doc.exitFullscreen) {
+          doc.exitFullscreen().catch(err => console.log('Exit fullscreen error:', err));
+        } else if (doc.webkitExitFullscreen) {
+          doc.webkitExitFullscreen();
+        } else if (doc.mozCancelFullScreen) {
+          doc.mozCancelFullScreen();
+        } else if (doc.msExitFullscreen) {
+          doc.msExitFullscreen();
+        }
+      }
+    } catch (e) {
+      console.warn('Fullscreen toggle error:', e);
+    }
+  };
   const [heroSize, setHeroSize] = useState(() => {
     const saved = loadState('aov_heroSize', null);
     const optimal = calculateOptimalFitSize();
@@ -231,6 +280,15 @@ function App() {
         className="volume-slider"
         title="Âm lượng nhạc nền"
       />
+      <div className="control-divider"></div>
+      <button
+        onClick={toggleFullscreen}
+        className={`btn-fullscreen ${isFullscreen ? 'is-fullscreen' : ''}`}
+        title={isFullscreen ? 'Thu nhỏ màn hình (Esc)' : 'Toàn màn hình: Tối ưu không gian hiển thị'}
+      >
+        <span className="btn-fullscreen-icon">{isFullscreen ? '🗗' : '⛶'}</span>
+        <span className="btn-fullscreen-text">{isFullscreen ? 'Thu nhỏ' : 'Full'}</span>
+      </button>
       <div className="control-divider"></div>
       <button
         onClick={handleRestartApp}
@@ -436,6 +494,34 @@ function App() {
     }
   };
 
+  // Lắng nghe sự kiện toàn màn hình (fullscreenchange) để đồng bộ trạng thái và tối ưu kích cỡ hiển thị
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isFull = !!(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
+      setIsFullscreen(isFull);
+      setTimeout(() => {
+        setHeroSize(calculateOptimalFitSize());
+      }, 200);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+    };
+  }, []);
+
   // Tự động căn chỉnh kích cỡ hình tướng khi xoay ngang/dọc thiết bị di động
   useEffect(() => {
     if (!showBanPickDraft) return;
@@ -619,6 +705,16 @@ function App() {
               >
                 <span className="bpd-reset-icon">↺</span>
                 <span className="bpd-reset-text">Vừa 1 trang</span>
+              </button>
+
+              {/* 3. Nút bật/tắt toàn màn hình (Full Screen) */}
+              <button
+                className={`bpd-btn-fullscreen ${isFullscreen ? 'is-fullscreen' : ''}`}
+                onClick={toggleFullscreen}
+                title={isFullscreen ? 'Thu nhỏ màn hình (Esc)' : 'Toàn màn hình: Tối đa hóa chiều rộng và chiều cao thiết bị'}
+              >
+                <span className="bpd-fullscreen-icon">{isFullscreen ? '🗗' : '⛶'}</span>
+                <span className="bpd-fullscreen-text">{isFullscreen ? 'Thu nhỏ' : 'Full'}</span>
               </button>
             </div>
           </div>

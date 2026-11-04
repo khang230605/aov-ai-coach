@@ -410,6 +410,46 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   transform: rotate(-180deg);
 }
 
+/* Nút Toàn màn hình góc dưới bên cạnh nhạc & khởi động lại */
+.btn-fullscreen {
+  background: rgba(46, 204, 113, 0.18);
+  border: 1px solid rgba(46, 204, 113, 0.5);
+  color: #2ecc71;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-fullscreen:hover {
+  background: rgba(46, 204, 113, 0.4);
+  border-color: #2ecc71;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.btn-fullscreen:active {
+  transform: scale(0.95);
+}
+
+.btn-fullscreen.is-fullscreen {
+  background: rgba(230, 126, 34, 0.22);
+  border-color: rgba(230, 126, 34, 0.55);
+  color: #f39c12;
+}
+
+.btn-fullscreen-icon {
+  font-size: 12px;
+  display: inline-block;
+  line-height: 1;
+}
+
 /* Tối ưu & CỐ ĐỊNH vị trí trên màn hình Mobile (Landscape & Portrait) */
 @media screen and (max-height: 600px) and (orientation: landscape), screen and (max-width: 600px) {
   .music-control {
@@ -447,6 +487,15 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 
   .btn-restart-text {
     display: none !important; /* Ẩn chữ trên mobile, chỉ hiển thị icon xoay 🔄 siêu gọn */
+  }
+
+  .btn-fullscreen {
+    padding: 2px 6px !important;
+    font-size: 10px !important;
+  }
+
+  .btn-fullscreen-text {
+    display: none !important;
   }
 }
 
@@ -777,6 +826,42 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
   color: #ffffff;
   border-color: #ffd32a;
   box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+}
+
+/* Nút Toàn màn hình trong BanPickDraft Header */
+.bpd-btn-fullscreen {
+  background: rgba(46, 204, 113, 0.2);
+  border: 1px solid rgba(46, 204, 113, 0.55);
+  color: #2ecc71;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 9px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.bpd-btn-fullscreen:hover {
+  background: rgba(46, 204, 113, 0.45);
+  color: #ffffff;
+  border-color: #2ecc71;
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
+}
+
+.bpd-btn-fullscreen.is-fullscreen {
+  background: rgba(230, 126, 34, 0.25);
+  border-color: rgba(230, 126, 34, 0.6);
+  color: #f39c12;
+}
+
+.bpd-fullscreen-icon {
+  font-size: 12px;
+  line-height: 1;
 }
 
 /* =========================================================
@@ -1323,6 +1408,16 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
     font-size: 10px !important;
   }
 
+  .bpd-btn-fullscreen {
+    padding: 2px 6px !important;
+    font-size: 10px !important;
+    gap: 2px !important;
+  }
+
+  .bpd-fullscreen-text {
+    font-size: 10px !important;
+  }
+
   /* Tối ưu không gian bảng trên Mobile để vừa khít 100vh */
   .bpd-table-scroll-wrapper {
     padding: 2px 4px 4px 4px !important;
@@ -1414,6 +1509,9 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 /* Thêm breakpoint cho màn hình siêu hẹp (< 500px) */
 @media screen and (max-width: 500px) {
   .bpd-reset-text {
+    display: none !important;
+  }
+  .bpd-fullscreen-text {
     display: none !important;
   }
   .bpd-stat-both {
