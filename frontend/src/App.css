@@ -370,3 +370,59 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
 .draft-server-indicator.waking,
 .draft-server-indicator.checking { background-color: #f1c40f; box-shadow: 0 0 8px #f1c40f; animation: pulseDot 1.5s infinite; }
 .draft-server-indicator.offline { background-color: #e74c3c; box-shadow: 0 0 8px #e74c3c; }
+
+/* Vạch ngăn cách và Nút Khởi động lại cạnh nhạc */
+.control-divider {
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0 3px;
+}
+
+.btn-restart {
+  background: rgba(231, 76, 60, 0.18);
+  border: 1px solid rgba(231, 76, 60, 0.5);
+  color: #ff7675;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn-restart:hover {
+  background: rgba(231, 76, 60, 0.4);
+  border-color: #ff4757;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 71, 87, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-restart:active {
+  transform: scale(0.96);
+}
+
+.btn-restart-icon {
+  font-size: 14px;
+  display: inline-block;
+  transition: transform 0.4s ease;
+}
+
+.btn-restart:hover .btn-restart-icon {
+  transform: rotate(-180deg);
+}
+
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  .btn-restart {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+  .btn-restart-text {
+    display: none;
+  }
+}

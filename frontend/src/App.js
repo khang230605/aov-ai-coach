@@ -111,17 +111,58 @@ function App() {
     setIsMusicPlaying(!isMusicPlaying);
   };
 
-  // Giao diện cụm nút bấm nhạc (Tạo sẵn để tái sử dụng)
+  // Hàm Khởi động lại: Quay về trang đầu tiên và xóa sạch LocalStorage
+  const handleRestartApp = () => {
+    if (inSeries) {
+      const confirmReset = window.confirm("Bạn có chắc chắn muốn khởi động lại và xóa toàn bộ dữ liệu cấm chọn hiện tại?");
+      if (!confirmReset) return;
+    }
+    
+    // Xóa toàn bộ dữ liệu cấm chọn trong LocalStorage
+    localStorage.removeItem('aov_inSeries');
+    localStorage.removeItem('aov_gameNumber');
+    localStorage.removeItem('aov_myTeamUsed');
+    localStorage.removeItem('aov_enemyTeamUsed');
+    localStorage.removeItem('aov_userSide');
+    localStorage.removeItem('aov_currentStepIdx');
+    localStorage.removeItem('aov_draftData');
+    localStorage.removeItem('aov_analysis');
+
+    // Reset toàn bộ state về màn hình đầu
+    setInSeries(false);
+    setUserSide(null);
+    setGameNumber(1);
+    setMyTeamUsed([]);
+    setEnemyTeamUsed([]);
+    setDraftData({ bluePicks: [], redPicks: [], blueBans: [], redBans: [] });
+    setCurrentStepIdx(0);
+    setAnalysisResult(null);
+    setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
+    setSearchTerm("");
+    setSelectedRole("Tất cả");
+  };
+
+  // Giao diện cụm nút bấm nhạc & khởi động lại
   const musicControlUI = (
     <div className="music-control">
-      <button onClick={toggleMusic} className="btn-music">
+      <button onClick={toggleMusic} className="btn-music" title={isMusicPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền'}>
         {isMusicPlaying ? '🔊' : '🔇'}
       </button>
       <input 
         type="range" min="0" max="1" step="0.05" 
         value={volume} onChange={(e) => setVolume(parseFloat(e.target.value))}
         className="volume-slider"
+        title="Âm lượng nhạc nền"
       />
+      <div className="control-divider"></div>
+      <button 
+        onClick={handleRestartApp} 
+        className="btn-restart" 
+        title="Khởi động lại: Quay về trang đầu và xóa sạch dữ liệu trận đấu"
+      >
+        <span className="btn-restart-icon">🔄</span>
+        <span className="btn-restart-text">Khởi động lại</span>
+      </button>
     </div>
   );
 
