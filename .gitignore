@@ -10,3 +10,5 @@ build/
 # Bỏ qua các file cấu hình môi trường (nếu có sau này)
 .env
 .DS_Store
+.env.local
+*.local

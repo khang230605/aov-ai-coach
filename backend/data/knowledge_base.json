@@ -267,6 +267,10 @@
         "Flowborn AP": {
             "winrate": 53.5,
             "picks": 15
+        },
+        "Evita": {
+            "winrate": 52.8,
+            "picks": 45
         }
     },
     "best_synergies": {

@@ -503,3 +503,44 @@ python train.py
 * **Đồng bộ hệ thống dữ liệu:**
   - Nâng tổng số tướng trong `heroes.json` (cả Frontend & Backend) lên **129 tướng**.
   - Tích hợp đầy đủ vào `meta_priority.json` và `knowledge_base.json`.
+
+---
+
+## 9. Lịch sử cập nhật tính năng mới (Changelog - 04/11/2026)
+
+### 🚀 1. Cơ chế Keep-Alive chống ngủ cho Render
+* **Vấn đề:** Gói miễn phí của Render tự động "ngủ đông" (sleep) sau 15 phút không có lượt truy cập, khiến lần mở web sau phải đợi 30-50 giây.
+* **Giải pháp:**
+  - Backend FastAPI bổ sung endpoint `/ping` và `/health` cực nhẹ, phản hồi tức thì (`{"status": "ok"}`).
+  - Frontend React thiết lập heartbeat định kỳ mỗi 13 phút gửi request ngầm đến `/ping`.
+  - Tích hợp huy hiệu trạng thái máy chủ AI thời gian thực (`Sẵn sàng`, `Đang khởi động`, `Mất kết nối`).
+  - Bổ sung GitHub Actions workflow (`keep_alive.yml`) chạy cron định kỳ 14 phút.
+
+### 🔄 2. Cụm nút điều khiển âm lượng & Khởi động lại (Restart App)
+* Bổ sung nút **🔄 Khởi động lại** nằm cạnh thanh trượt âm lượng nhạc nền ở góc dưới bên trái (cố định trên mọi màn hình).
+* Khi nhấn, ứng dụng hiển thị hộp thoại xác nhận an toàn, sau đó xóa sạch toàn bộ `localStorage` và đưa trạng thái về lại màn hình khởi đầu.
+
+### 🦸 3. Cập nhật hệ thống tướng mới (Tổng cộng 130 tướng)
+* **Tamyn:** Vai trò Đấu sĩ / Sát thủ, keyword `tamyn`, Meta Score 89.6. Đã bổ sung alias, dữ liệu meta, counters, synergies và ảnh avatar.
+* **Flowborn AD & Flowborn AP:** Hai biến thể tướng mới được cập nhật vào cả `heroes.json` frontend, backend và `knowledge_base.json`.
+* **Evita:** Tướng Pháp sư đường giữa mới ra mắt, tải ảnh đại diện chính thức từ Garena (`evita.jpg`), bổ sung vào `heroes.json`, `meta_priority.json`, `knowledge_base.json`.
+* **Danh sách tướng hiện tại (`HeroListNow.txt`):** Trích xuất đầy đủ 130 vị tướng trong game, mỗi tên 1 dòng tại `Notemd/HeroListNow.txt`.
+
+### 📋 4. Tính năng mới: BAN PICK DRAFT (Tier List theo Lane)
+* **Vị trí truy cập:** Nút **📋 BAN PICK DRAFT** nằm ngay tại trang đầu tiên bên cạnh nút "BẮT ĐẦU TRẬN ĐẤU".
+* **Giao diện bảng ma trận Tier List:**
+  - Cột bên trái: Danh sách các TIER theo thứ tự: `S`, `A`, `B`, `C`, `D`, `SPECIAL` với màu sắc và hiệu ứng ánh sáng gradient tương ứng.
+  - Hàng tiêu đề trên cùng: Các Lane theo thứ tự: `Top`, `Jungle`, `Mid`, `AD`, `SP` kèm biểu tượng đặc trưng.
+  - Dữ liệu trong ô: Hiển thị avatar hình ảnh các tướng theo đúng meta phân bố (chỉ hiện hình, không hiện tên chữ). Hover chuột hiển thị tooltip tên tướng.
+* **Cơ chế tương tác Cấm/Chọn thông minh:**
+  - Nhấp vào ảnh tướng sẽ mở Dropdown Menu gồm:
+    - **Team mình đã pick (Xanh dương):** Tô viền màu xanh dương sáng rực và hiệu ứng glow xanh `box-shadow: 0 0 12px #3498db`.
+    - **Team đối thủ đã pick (Đỏ):** Tô viền màu đỏ sáng rực và hiệu ứng glow đỏ `box-shadow: 0 0 12px #e74c3c`.
+  - Tự động đóng dropdown sau khi chọn. Nhấp lại vào tướng để mở lại menu.
+  - Hỗ trợ hoàn tác (undo): Nhấp lại vào cùng một lựa chọn để hủy trạng thái pick đó.
+  - **Trường hợp cả 2 team đều pick:** Ảnh của tướng tự động chuyển sang chế độ đen trắng (grayscale 100%), viền màu và hiệu ứng glow biến mất hoàn toàn.
+  - **Đồng bộ đa lane tự động:** Một tướng xuất hiện ở nhiều lane (ví dụ Tamyn đi Top & Jungle, Edras đi Top & AD & Jungle, Taara, Bolt Baron, Mina,...) khi được chọn ở bất kỳ vị trí nào sẽ tự động cập nhật đồng bộ trên toàn bộ bảng.
+  - **Header thống kê nhanh:** Hiển thị số tướng Team mình đã pick, Team đối thủ đã pick, tướng bị khóa cả 2 team, nút xóa nhanh ("🗑️ Xóa chọn"), nút quay lại trang chủ ("⬅ Trang chủ").
+  - **Reset toàn diện:** Nút "🔄 Khởi động lại" reset sạch toàn bộ bảng về trạng thái mặc định và đưa về trang chủ.
+  - **Lưu trữ bền vững:** Tự động lưu trạng thái vào `localStorage` (`aov_showBanPickDraft`, `aov_banPickDraftState`) giúp không bị mất dữ liệu khi F5/reload trang.
+  - **Responsive tối ưu:** Hoạt động mượt mà trên desktop và điện thoại xoay ngang (mobile landscape).

@@ -1,5 +1,13 @@
 [
     {
+        "keyword": "evita",
+        "name": "Evita",
+        "roles": [
+            "Pháp sư"
+        ],
+        "avatar": "/assets/heroes/evita.jpg"
+    },
+    {
         "keyword": "flowbornad",
         "name": "Flowborn AD",
         "roles": [

@@ -426,3 +426,555 @@ body { background-color: #050912; color: white; font-family: 'Segoe UI', Tahoma,
     display: none;
   }
 }
+
+
+/* =========================================================
+   📋 BAN PICK DRAFT (TIER LIST THEO LANE)
+========================================================= */
+
+/* Nút trên màn hình đầu tiên (Start Screen) */
+.start-screen-actions {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.btn-banpick-draft {
+  background: linear-gradient(135deg, #0984e3, #6c5ce7);
+  border: 2px solid rgba(162, 155, 254, 0.6);
+  padding: 15px 35px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  border-radius: 30px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  box-shadow: 0 0 20px rgba(108, 92, 231, 0.5);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-banpick-draft:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(108, 92, 231, 0.85);
+  border-color: #a29bfe;
+}
+
+/* Container chính của toàn màn hình BanPickDraft */
+.bpd-screen-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at 50% 20%, #101726 0%, #060911 100%);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 500;
+}
+
+/* Header bar phía trên */
+.bpd-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  background: rgba(10, 14, 23, 0.95);
+  border-bottom: 2px solid #1a2333;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.bpd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.bpd-btn-back {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #e0e0e0;
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bpd-btn-back:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #f1c40f;
+  border-color: #f1c40f;
+  transform: translateX(-2px);
+}
+
+.bpd-title-group {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.bpd-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #f1c40f;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(241, 196, 15, 0.4);
+  margin: 0;
+}
+
+.bpd-subtitle {
+  font-size: 11px;
+  color: #a0aec0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Cụm thông tin thống kê lượt pick */
+.bpd-header-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bpd-stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.bpd-stat-mine {
+  border: 1px solid rgba(52, 152, 219, 0.6);
+  color: #74b9ff;
+}
+
+.bpd-stat-enemy {
+  border: 1px solid rgba(231, 76, 60, 0.6);
+  color: #ff7675;
+}
+
+.bpd-stat-both {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #b2bec3;
+}
+
+.bpd-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.bpd-dot.mine {
+  background: #3498db;
+  box-shadow: 0 0 8px #3498db;
+}
+
+.bpd-dot.enemy {
+  background: #e74c3c;
+  box-shadow: 0 0 8px #e74c3c;
+}
+
+.bpd-dot.both {
+  background: #7f8c8d;
+}
+
+.bpd-btn-clear {
+  background: rgba(231, 76, 60, 0.15);
+  border: 1px solid rgba(231, 76, 60, 0.4);
+  color: #ff7675;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bpd-btn-clear:hover {
+  background: rgba(231, 76, 60, 0.35);
+  color: #ffffff;
+  border-color: #ff4757;
+}
+
+/* Khung cuộn Table */
+.bpd-table-scroll-wrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 15px 25px 85px 25px; /* Để trống bên dưới cho cụm nút nhạc / restart */
+}
+
+.bpd-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 950px;
+  background: rgba(10, 15, 26, 0.75);
+  border-radius: 10px;
+  border: 1px solid #1a2333;
+}
+
+/* Header cột */
+.bpd-th-corner {
+  width: 85px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #f1c40f;
+  background: #0c1220;
+  padding: 12px;
+  border-bottom: 2px solid #233148;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.bpd-th-lane {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  background: #0c1220;
+  padding: 12px 10px;
+  border-bottom: 2px solid #233148;
+  border-left: 1px solid #1a2333;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.bpd-lane-icon {
+  margin-right: 6px;
+  font-size: 16px;
+}
+
+/* Cột Tier bên trái */
+.bpd-tier-badge-cell {
+  width: 85px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px 6px;
+  border-bottom: 1px solid #1a2333;
+}
+
+.bpd-tier-label {
+  display: inline-block;
+  min-width: 44px;
+  text-align: center;
+  font-weight: 900;
+  border-radius: 6px;
+  user-select: none;
+}
+
+.tier-badge-s .bpd-tier-label {
+  background: linear-gradient(135deg, #f1c40f, #e67e22);
+  color: #000;
+  font-size: 18px;
+  padding: 8px 12px;
+  box-shadow: 0 0 15px rgba(241, 196, 15, 0.5);
+}
+
+.tier-badge-a .bpd-tier-label {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+  font-size: 18px;
+  padding: 8px 12px;
+  box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+}
+
+.tier-badge-b .bpd-tier-label {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: #fff;
+  font-size: 18px;
+  padding: 8px 12px;
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+}
+
+.tier-badge-c .bpd-tier-label {
+  background: linear-gradient(135deg, #2ecc71, #27ae60);
+  color: #000;
+  font-size: 18px;
+  padding: 8px 12px;
+  box-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+}
+
+.tier-badge-d .bpd-tier-label {
+  background: linear-gradient(135deg, #7f8c8d, #95a5a6);
+  color: #fff;
+  font-size: 18px;
+  padding: 8px 12px;
+}
+
+.tier-badge-special .bpd-tier-label {
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 8px 6px;
+  box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+}
+
+/* Các ô Cell chứa tướng */
+.bpd-cell {
+  padding: 8px 10px;
+  vertical-align: middle;
+  border-bottom: 1px solid #1a2333;
+  border-left: 1px solid #1a2333;
+  background: rgba(8, 12, 20, 0.5);
+  position: relative;
+}
+
+.bpd-empty-cell {
+  color: #334155;
+  font-size: 16px;
+  text-align: center;
+  user-select: none;
+}
+
+.bpd-heroes-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Từng icon tướng */
+.bpd-hero-item {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  user-select: none;
+}
+
+.bpd-hero-item:hover {
+  transform: scale(1.12);
+  z-index: 50;
+}
+
+.bpd-hero-item.dropdown-active {
+  z-index: 1000 !important;
+  transform: scale(1.12);
+}
+
+.bpd-hero-img-box {
+  width: 100%;
+  height: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #0a0e17;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.bpd-hero-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+/* =========================================================
+   HIỆU ỨNG PICK TƯỚNG THEO YÊU CẦU:
+   1. Team mình pick: Viền xanh dương + Glow sáng xanh
+   2. Team đối thủ pick: Viền đỏ + Glow sáng đỏ
+   3. Cả 2 team pick: Trắng đen (Grayscale) + Mất viền màu
+========================================================= */
+
+/* 1. Team mình đã pick */
+.bpd-hero-item.tier-hero-mine .bpd-hero-img-box {
+  border: 2px solid #3498db !important;
+  box-shadow: 0 0 12px #3498db, 0 0 20px rgba(52, 152, 219, 0.7), inset 0 0 6px rgba(52, 152, 219, 0.6) !important;
+}
+
+/* 2. Team đối thủ đã pick */
+.bpd-hero-item.tier-hero-enemy .bpd-hero-img-box {
+  border: 2px solid #e74c3c !important;
+  box-shadow: 0 0 12px #e74c3c, 0 0 20px rgba(231, 76, 60, 0.7), inset 0 0 6px rgba(231, 76, 60, 0.6) !important;
+}
+
+/* 3. Cả 2 team đều pick -> Trắng đen, viền màu mất luôn */
+.bpd-hero-item.tier-hero-both .bpd-hero-img-box {
+  border: 2px solid #475569 !important;
+  box-shadow: none !important;
+}
+
+.bpd-hero-item.tier-hero-both .bpd-hero-avatar {
+  filter: grayscale(100%) contrast(90%);
+  opacity: 0.38;
+}
+
+/* Dropdown Menu khi nhấn vào tướng */
+.bpd-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 7px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0d1526;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 185px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.85), 0 0 15px rgba(0, 0, 0, 0.5);
+  z-index: 99999;
+  backdrop-filter: blur(12px);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: bpdDropdownFade 0.18s ease-out;
+}
+
+@keyframes bpdDropdownFade {
+  from { opacity: 0; transform: translate(-50%, -6px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.bpd-dropdown-header {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f1c40f;
+  text-align: center;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2px;
+  white-space: nowrap;
+}
+
+.bpd-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.bpd-btn-check {
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+}
+
+/* Nút Team mình đã pick (Xanh dương) */
+.bpd-btn-pick-mine {
+  background: rgba(52, 152, 219, 0.18);
+  border-color: rgba(52, 152, 219, 0.5);
+  color: #74b9ff;
+}
+
+.bpd-btn-pick-mine:hover {
+  background: rgba(52, 152, 219, 0.35);
+  border-color: #3498db;
+  color: #ffffff;
+}
+
+.bpd-btn-pick-mine.selected {
+  background: #3498db;
+  border-color: #2980b9;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.6);
+}
+
+/* Nút Team đối thủ đã pick (Đỏ) */
+.bpd-btn-pick-enemy {
+  background: rgba(231, 76, 60, 0.18);
+  border-color: rgba(231, 76, 60, 0.5);
+  color: #ff7675;
+}
+
+.bpd-btn-pick-enemy:hover {
+  background: rgba(231, 76, 60, 0.35);
+  border-color: #e74c3c;
+  color: #ffffff;
+}
+
+.bpd-btn-pick-enemy.selected {
+  background: #e74c3c;
+  border-color: #c0392b;
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(231, 76, 60, 0.6);
+}
+
+/* Tối ưu BanPickDraft cho màn hình ngang điện thoại (Mobile Landscape) */
+@media screen and (max-height: 600px) and (orientation: landscape) {
+  .bpd-header-bar {
+    padding: 6px 15px;
+  }
+  .bpd-title {
+    font-size: 15px;
+  }
+  .bpd-subtitle {
+    display: none;
+  }
+  .bpd-header-stats {
+    gap: 8px;
+  }
+  .bpd-stat-badge {
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+  .bpd-table-scroll-wrapper {
+    padding: 8px 10px 70px 10px;
+  }
+  .bpd-hero-item {
+    width: 36px;
+    height: 36px;
+  }
+  .bpd-th-corner, .bpd-tier-badge-cell {
+    width: 65px;
+    padding: 6px 4px;
+  }
+  .bpd-tier-label {
+    min-width: 32px;
+    font-size: 14px !important;
+    padding: 6px 8px !important;
+  }
+  .tier-badge-special .bpd-tier-label {
+    font-size: 9px !important;
+    padding: 4px 2px !important;
+  }
+  .bpd-dropdown-menu {
+    min-width: 165px;
+    padding: 6px;
+  }
+  .bpd-menu-btn {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+}

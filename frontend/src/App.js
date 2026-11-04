@@ -3,6 +3,7 @@ import axios from 'axios';
 import { DRAFT_STEPS } from './constants';
 import './App.css';
 import heroesData from './heroes.json';
+import { TIER_LIST_DATA, TIERS, LANES } from './tierListData';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://aov-backend-khang.onrender.com';
 const KEEPALIVE_INTERVAL = 13 * 60 * 1000; // 13 phút (an toàn trước mốc 15 phút Render tự ngủ)
@@ -39,6 +40,11 @@ function App() {
   const [suggestions, setSuggestions] = useState({ pick_suggestions: [], ban_suggestions: [] });
   const [analysisResult, setAnalysisResult] = useState(() => loadState('aov_analysis', null));
   const [searchTerm, setSearchTerm] = useState("");
+
+  // --- STATE CHO TÍNH NĂNG BAN PICK DRAFT (TIER LIST) ---
+  const [showBanPickDraft, setShowBanPickDraft] = useState(() => loadState('aov_showBanPickDraft', false));
+  const [banPickDraftState, setBanPickDraftState] = useState(() => loadState('aov_banPickDraftState', {}));
+  const [activeDropdownHero, setActiveDropdownHero] = useState(null);
 
   // --- LOGIC GIỮ RENDER KHÔNG NGỦ & KIỂM TRA KẾT NỐI (KEEP-ALIVE HEARTBEAT) ---
   const [serverStatus, setServerStatus] = useState('checking'); // 'checking' | 'online' | 'waking' | 'offline'
@@ -140,6 +146,11 @@ function App() {
     setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
     setSearchTerm("");
     setSelectedRole("Tất cả");
+    setShowBanPickDraft(false);
+    setBanPickDraftState({});
+    setActiveDropdownHero(null);
+    localStorage.removeItem('aov_showBanPickDraft');
+    localStorage.removeItem('aov_banPickDraftState');
   };
 
   // Giao diện cụm nút bấm nhạc & khởi động lại
@@ -180,7 +191,9 @@ function App() {
     localStorage.setItem('aov_currentStepIdx', JSON.stringify(currentStepIdx));
     localStorage.setItem('aov_draftData', JSON.stringify(draftData));
     localStorage.setItem('aov_analysis', JSON.stringify(analysisResult));
-  }, [inSeries, gameNumber, myTeamUsed, enemyTeamUsed, userSide, currentStepIdx, draftData, analysisResult]);
+    localStorage.setItem('aov_showBanPickDraft', JSON.stringify(showBanPickDraft));
+    localStorage.setItem('aov_banPickDraftState', JSON.stringify(banPickDraftState));
+  }, [inSeries, gameNumber, myTeamUsed, enemyTeamUsed, userSide, currentStepIdx, draftData, analysisResult, showBanPickDraft, banPickDraftState]);
 
   const normalizeName = (str) => {
     if (!str) return '';
@@ -305,6 +318,55 @@ function App() {
   };
 
 // --- CÁC HÀM ĐIỀU KHIỂN BO ĐẤU ---
+  // --- CÁC HÀM XỬ LÝ BAN PICK DRAFT ---
+  const handleHeroDropdownToggle = (keyword, e) => {
+    e.stopPropagation();
+    setActiveDropdownHero(prev => prev === keyword ? null : keyword);
+  };
+
+  const handleToggleTeamPick = (keyword, team, e) => {
+    e.stopPropagation();
+    setBanPickDraftState(prev => {
+      const current = prev[keyword] || { mine: false, enemy: false };
+      return {
+        ...prev,
+        [keyword]: {
+          ...current,
+          [team]: !current[team]
+        }
+      };
+    });
+    // Tự động tắt dropdown menu khi đã chọn
+    setActiveDropdownHero(null);
+  };
+
+  const getHeroDraftClass = (keyword) => {
+    const state = banPickDraftState[keyword];
+    if (!state) return '';
+    if (state.mine && state.enemy) return 'tier-hero-both';
+    if (state.mine) return 'tier-hero-mine';
+    if (state.enemy) return 'tier-hero-enemy';
+    return '';
+  };
+
+  const handleClearAllDraftPicks = () => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa toàn bộ lượt cấm chọn trong bảng Tier List?")) {
+      setBanPickDraftState({});
+      setActiveDropdownHero(null);
+    }
+  };
+
+  // Tự động đóng dropdown khi nhấn ra ngoài
+  useEffect(() => {
+    const handleOutsideClick = () => {
+      if (activeDropdownHero) {
+        setActiveDropdownHero(null);
+      }
+    };
+    window.addEventListener('click', handleOutsideClick);
+    return () => window.removeEventListener('click', handleOutsideClick);
+  }, [activeDropdownHero]);
+
   const handleStartSeries = () => {
     setInSeries(true); // Chuyển sang màn hình chọn Xanh/Đỏ
     
@@ -360,6 +422,147 @@ const handleEndSeries = () => {
     setSuggestions({ pick_suggestions: [], ban_suggestions: [] });
   };
 
+  // === MÀN HÌNH: BAN PICK DRAFT (TIER LIST THEO LANE) ===
+  if (showBanPickDraft) {
+    // Đếm số lượng tướng đã pick
+    let myPicksCount = 0;
+    let enemyPicksCount = 0;
+    let bothPicksCount = 0;
+    Object.values(banPickDraftState).forEach(st => {
+      if (st.mine && st.enemy) bothPicksCount++;
+      else if (st.mine) myPicksCount++;
+      else if (st.enemy) enemyPicksCount++;
+    });
+
+    return (
+      <>
+        <div className="rotate-warning">
+          <div className="rotate-icon">📱 🔄</div>
+          <h2>Vui lòng xoay ngang thiết bị</h2>
+          <p>Giao diện BanPickDraft được thiết kế tối ưu nhất cho màn hình ngang.</p>
+        </div>
+        {musicControlUI}
+        <div className="bpd-screen-container">
+          {/* Header thanh công cụ */}
+          <div className="bpd-header-bar">
+            <div className="bpd-header-left">
+              <button className="bpd-btn-back" onClick={() => { setShowBanPickDraft(false); setActiveDropdownHero(null); }}>
+                ⬅ Trang chủ
+              </button>
+              <div className="bpd-title-group">
+                <h1 className="bpd-title">📋 BAN PICK DRAFT</h1>
+                <span className="bpd-subtitle">Tier List Meta Hiện Tại</span>
+              </div>
+            </div>
+
+            <div className="bpd-header-stats">
+              <div className="bpd-stat-badge bpd-stat-mine" title="Số tướng Team mình đã pick">
+                <span className="bpd-dot mine"></span>
+                <span>Team mình: <strong>{myPicksCount}</strong></span>
+              </div>
+              <div className="bpd-stat-badge bpd-stat-enemy" title="Số tướng Team đối thủ đã pick">
+                <span className="bpd-dot enemy"></span>
+                <span>Đối thủ: <strong>{enemyPicksCount}</strong></span>
+              </div>
+              <div className="bpd-stat-badge bpd-stat-both" title="Tướng bị khóa bởi cả 2 team (Đen trắng)">
+                <span className="bpd-dot both"></span>
+                <span>Cả hai: <strong>{bothPicksCount}</strong></span>
+              </div>
+              <button className="bpd-btn-clear" onClick={handleClearAllDraftPicks} title="Xóa tất cả lượt pick trong bảng">
+                🗑️ Xóa chọn
+              </button>
+            </div>
+          </div>
+
+          {/* Bảng Table Tier List */}
+          <div className="bpd-table-scroll-wrapper">
+            <table className="bpd-table">
+              <thead>
+                <tr>
+                  <th className="bpd-th-corner">TIER</th>
+                  {LANES.map(lane => (
+                    <th key={lane.id} className="bpd-th-lane">
+                      <span className="bpd-lane-icon">{lane.icon}</span>
+                      <span className="bpd-lane-name">{lane.id}</span>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {TIERS.map(tier => (
+                  <tr key={tier} className={`bpd-row bpd-row-${tier.toLowerCase()}`}>
+                    <td className={`bpd-tier-badge-cell tier-badge-${tier.toLowerCase()}`}>
+                      <div className="bpd-tier-label">{tier}</div>
+                    </td>
+                    {LANES.map(lane => {
+                      const heroesInCell = (TIER_LIST_DATA[lane.id] && TIER_LIST_DATA[lane.id][tier]) || [];
+                      return (
+                        <td key={lane.id} className="bpd-cell">
+                          {heroesInCell.length === 0 ? (
+                            <div className="bpd-empty-cell">—</div>
+                          ) : (
+                            <div className="bpd-heroes-flex">
+                              {heroesInCell.map(hero => {
+                                const heroStateClass = getHeroDraftClass(hero.keyword);
+                                const isDropdownOpen = activeDropdownHero === hero.keyword;
+                                const currentState = banPickDraftState[hero.keyword] || { mine: false, enemy: false };
+
+                                return (
+                                  <div 
+                                    key={`${lane.id}-${tier}-${hero.keyword}`} 
+                                    className={`bpd-hero-item ${heroStateClass} ${isDropdownOpen ? 'dropdown-active' : ''}`}
+                                    onClick={(e) => handleHeroDropdownToggle(hero.keyword, e)}
+                                    title={`${hero.name} (${lane.id} - Tier ${tier})`}
+                                  >
+                                    <div className="bpd-hero-img-box">
+                                      <img 
+                                        src={hero.avatar} 
+                                        alt={hero.name} 
+                                        className="bpd-hero-avatar"
+                                        loading="lazy"
+                                      />
+                                    </div>
+
+                                    {/* Dropdown Menu khi nhấn vào tướng */}
+                                    {isDropdownOpen && (
+                                      <div className="bpd-dropdown-menu" onClick={(e) => e.stopPropagation()}>
+                                        <div className="bpd-dropdown-header">
+                                          <span>{hero.name}</span>
+                                        </div>
+                                        <button 
+                                          className={`bpd-menu-btn bpd-btn-pick-mine ${currentState.mine ? 'selected' : ''}`}
+                                          onClick={(e) => handleToggleTeamPick(hero.keyword, 'mine', e)}
+                                        >
+                                          <span className="bpd-btn-check">{currentState.mine ? '✓' : '🔵'}</span>
+                                          <span>Team mình đã pick</span>
+                                        </button>
+                                        <button 
+                                          className={`bpd-menu-btn bpd-btn-pick-enemy ${currentState.enemy ? 'selected' : ''}`}
+                                          onClick={(e) => handleToggleTeamPick(hero.keyword, 'enemy', e)}
+                                        >
+                                          <span className="bpd-btn-check">{currentState.enemy ? '✓' : '🔴'}</span>
+                                          <span>Team đối thủ đã pick</span>
+                                        </button>
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   // MÀN HÌNH 1: TẠO TRẬN ĐẤU MỚI
   if (!inSeries) {
     return (
@@ -377,9 +580,14 @@ const handleEndSeries = () => {
               <p>Hệ thống phân tích & cấm chọn Liên Quân Mobile</p>
               {serverStatusUI}
             </div>
-            <button className="btn-create-match" onClick={handleStartSeries}>
-              BẮT ĐẦU TRẬN ĐẤU
-            </button>
+            <div className="start-screen-actions">
+              <button className="btn-create-match" onClick={handleStartSeries}>
+                ⚔️ BẮT ĐẦU TRẬN ĐẤU
+              </button>
+              <button className="btn-banpick-draft" onClick={() => setShowBanPickDraft(true)}>
+                📋 BAN PICK DRAFT
+              </button>
+            </div>
           </div>
         </div>
       </>
