@@ -42,15 +42,73 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
   // --- CẤU HÌNH & STATE CHO TÍNH NĂNG BAN PICK DRAFT (TIER LIST) ---
-  const DEFAULT_HERO_SIZE = 36; // Kích thước chuẩn để toàn bộ tướng vừa vặn 1 trang không cần scroll
-  const MIN_HERO_SIZE = 24;
+  const MIN_HERO_SIZE = 14;
   const MAX_HERO_SIZE = 64;
   const HERO_SIZE_STEP = 2;
+
+  // Hàm tính toán kích cỡ hình tướng tối ưu để VỪA KHÍT 1 TRANG (không cuộn) trên mọi kích thước màn hình
+  const calculateOptimalFitSize = () => {
+    try {
+      const w = window.innerWidth || document.documentElement.clientWidth || 1024;
+      const h = window.innerHeight || document.documentElement.clientHeight || 768;
+      
+      const isCompact = w < 768 || h < 600;
+      const headerH = isCompact ? 38 : 46;
+      const tableHeaderH = isCompact ? 26 : 34;
+      const paddingH = isCompact ? 10 : 18;
+      // Trừ thêm 14px đệm an toàn cho thanh trình duyệt, thanh điều hướng và viền bảng
+      const availableH = Math.max(120, h - headerH - tableHeaderH - paddingH - 14);
+      
+      const tierColW = isCompact ? 38 : 52;
+      const laneColW = Math.max(50, (w - (isCompact ? 12 : 28) - tierColW) / 5);
+      
+      let bestSize = 16;
+      for (let sz = 16; sz <= 54; sz += 2) {
+        const gap = sz < 24 ? 2 : (sz < 32 ? 3 : 4);
+        const itemW = sz + gap;
+        const heroesPerRow = Math.max(1, Math.floor((laneColW - 4) / itemW));
+        
+        let totalTableH = 0;
+        const tiers = ['S', 'A', 'B', 'C', 'D', 'SPECIAL'];
+        const lanes = ['Top', 'Jungle', 'Mid', 'AD', 'SP'];
+        
+        for (const tier of tiers) {
+          let maxInTier = 0;
+          for (const lane of lanes) {
+            const count = TIER_LIST_DATA[lane]?.[tier]?.length || 0;
+            if (count > maxInTier) maxInTier = count;
+          }
+          const rows = maxInTier === 0 ? 1 : Math.ceil(maxInTier / heroesPerRow);
+          // 2px padding top + 2px padding bottom + 1.5px border
+          const cellPad = isCompact ? 6 : 8;
+          totalTableH += rows * (sz + gap) + cellPad;
+        }
+        
+        if (totalTableH <= availableH) {
+          bestSize = sz;
+        } else {
+          break;
+        }
+      }
+      return bestSize;
+    } catch (e) {
+      return 36;
+    }
+  };
 
   const [showBanPickDraft, setShowBanPickDraft] = useState(() => loadState('aov_showBanPickDraft', false));
   const [banPickDraftState, setBanPickDraftState] = useState(() => loadState('aov_banPickDraftState', {}));
   const [activeDropdownHero, setActiveDropdownHero] = useState(null);
-  const [heroSize, setHeroSize] = useState(() => loadState('aov_heroSize', DEFAULT_HERO_SIZE));
+  const [heroSize, setHeroSize] = useState(() => {
+    const saved = loadState('aov_heroSize', null);
+    const optimal = calculateOptimalFitSize();
+    if (saved !== null) {
+      const isCompact = (window.innerWidth || 1024) < 768 || (window.innerHeight || 768) < 600;
+      if (isCompact && saved > 28) return optimal;
+      return saved;
+    }
+    return optimal;
+  });
 
   // --- LOGIC GIỮ RENDER KHÔNG NGỦ & KIỂM TRA KẾT NỐI (KEEP-ALIVE HEARTBEAT) ---
   const [serverStatus, setServerStatus] = useState('checking'); // 'checking' | 'online' | 'waking' | 'offline'
@@ -158,7 +216,7 @@ function App() {
     localStorage.removeItem('aov_showBanPickDraft');
     localStorage.removeItem('aov_banPickDraftState');
     localStorage.removeItem('aov_heroSize');
-    setHeroSize(DEFAULT_HERO_SIZE);
+    setHeroSize(calculateOptimalFitSize());
   };
 
   // Giao diện cụm nút bấm nhạc & khởi động lại
@@ -368,7 +426,7 @@ function App() {
   };
 
   const handleResetHeroSize = () => {
-    setHeroSize(DEFAULT_HERO_SIZE);
+    setHeroSize(calculateOptimalFitSize());
   };
 
   const handleClearAllDraftPicks = () => {
@@ -377,6 +435,25 @@ function App() {
       setActiveDropdownHero(null);
     }
   };
+
+  // Tự động căn chỉnh kích cỡ hình tướng khi xoay ngang/dọc thiết bị di động
+  useEffect(() => {
+    if (!showBanPickDraft) return;
+    let lastW = window.innerWidth;
+    const handleOrientationOrResize = () => {
+      const curW = window.innerWidth;
+      if (Math.abs(curW - lastW) > 60) {
+        lastW = curW;
+        setHeroSize(calculateOptimalFitSize());
+      }
+    };
+    window.addEventListener('resize', handleOrientationOrResize);
+    window.addEventListener('orientationchange', handleOrientationOrResize);
+    return () => {
+      window.removeEventListener('resize', handleOrientationOrResize);
+      window.removeEventListener('orientationchange', handleOrientationOrResize);
+    };
+  }, [showBanPickDraft]);
 
   // Tự động đóng dropdown khi nhấn ra ngoài
   useEffect(() => {
@@ -467,11 +544,12 @@ function App() {
           {/* Header thanh công cụ */}
           <div className="bpd-header-bar">
             <div className="bpd-header-left">
-              <button className="bpd-btn-back" onClick={() => { setShowBanPickDraft(false); setActiveDropdownHero(null); }}>
-                ⬅ Trang chủ
+              <button className="bpd-btn-back" onClick={() => { setShowBanPickDraft(false); setActiveDropdownHero(null); }} title="Quay về màn hình chính">
+                <span className="bpd-back-icon">⬅</span>
+                <span className="bpd-back-text">Trang chủ</span>
               </button>
 
-              {/* Nút tăng giảm âm lượng lên trên góc trái, nằm bên phải nút về Trang chủ */}
+              {/* Nút tăng giảm âm lượng */}
               <div className="bpd-volume-control" title="Âm lượng nhạc nền">
                 <button onClick={toggleMusic} className="bpd-btn-music" title={isMusicPlaying ? 'Tắt nhạc nền' : 'Bật nhạc nền'}>
                   {isMusicPlaying ? '🔊' : '🔇'}
@@ -485,29 +563,35 @@ function App() {
               </div>
 
               <div className="bpd-title-group">
-                <h1 className="bpd-title">📋 BAN PICK DRAFT 📋</h1>
+                <h1 className="bpd-title">TIER LIST</h1>
+                <span className="bpd-subtitle">Meta Hiện Tại</span>
               </div>
             </div>
 
             <div className="bpd-header-stats">
               <div className="bpd-stat-badge bpd-stat-mine" title="Số tướng Team mình đã pick">
                 <span className="bpd-dot mine"></span>
-                <span>Team mình: <strong>{myPicksCount}</strong></span>
+                <span className="bpd-stat-label">Team mình: </span>
+                <strong>{myPicksCount}</strong>
               </div>
               <div className="bpd-stat-badge bpd-stat-enemy" title="Số tướng Team đối thủ đã pick">
                 <span className="bpd-dot enemy"></span>
-                <span>Đối thủ: <strong>{enemyPicksCount}</strong></span>
+                <span className="bpd-stat-label">Đối thủ: </span>
+                <strong>{enemyPicksCount}</strong>
               </div>
               <div className="bpd-stat-badge bpd-stat-both" title="Tướng bị khóa bởi cả 2 team (Đen trắng)">
                 <span className="bpd-dot both"></span>
-                <span>Cả hai: <strong>{bothPicksCount}</strong></span>
+                <span className="bpd-stat-label">Cả hai: </span>
+                <strong>{bothPicksCount}</strong>
               </div>
+              
               <button className="bpd-btn-clear" onClick={handleClearAllDraftPicks} title="Xóa tất cả lượt pick trong bảng">
-                🗑️ Xóa chọn
+                <span className="bpd-clear-icon">🗑️</span>
+                <span className="bpd-clear-text">Xóa</span>
               </button>
 
               {/* 1. Nút tăng / giảm size hình tướng */}
-              <div className="bpd-size-control-group" title="Tăng / Giảm kích thước hình tướng (các ô, cột và bảng giữ nguyên kích thước)">
+              <div className="bpd-size-control-group" title="Tăng / Giảm kích cỡ tướng">
                 <button
                   className="bpd-btn-size-step"
                   onClick={handleDecreaseHeroSize}
@@ -529,11 +613,12 @@ function App() {
 
               {/* 2. Nút quay về size mặc định (tất cả tướng nằm trong 1 trang, ko cần scroll) */}
               <button
-                className={`bpd-btn-size-reset ${heroSize === DEFAULT_HERO_SIZE ? 'is-default' : ''}`}
+                className="bpd-btn-size-reset"
                 onClick={handleResetHeroSize}
-                title="Quay về size mặc định (tất cả tướng nằm vừa vặn trong 1 trang, không cần cuộn)"
+                title="Quay về size mặc định (tất cả tướng vừa vặn 1 trang trên thiết bị này, không cần cuộn)"
               >
-                ↺ Vừa 1 trang
+                <span className="bpd-reset-icon">↺</span>
+                <span className="bpd-reset-text">Vừa 1 trang</span>
               </button>
             </div>
           </div>
