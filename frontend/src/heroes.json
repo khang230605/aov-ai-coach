@@ -1,5 +1,21 @@
 [
     {
+        "keyword": "flowbornad",
+        "name": "Flowborn AD",
+        "roles": [
+            "Xạ thủ"
+        ],
+        "avatar": "/assets/heroes/flowbornad.jpg"
+    },
+    {
+        "keyword": "flowbornap",
+        "name": "Flowborn AP",
+        "roles": [
+            "Pháp sư"
+        ],
+        "avatar": "/assets/heroes/flowbornap.jpg"
+    },
+    {
         "keyword": "tamyn",
         "name": "Tamyn",
         "roles": [

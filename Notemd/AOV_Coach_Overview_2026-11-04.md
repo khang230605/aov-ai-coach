@@ -479,3 +479,27 @@ python train.py
      - **Bị khắc chế:** Dễ bị khống chế cứng bởi Aleister, Arum, Omen, Baldum.
      - **Phối hợp (Synergy):** Cặp bài trùng cực mạnh cùng các trợ thủ tạo tốc chạy / hồi phục / hồi chiêu (Aya, Rouie, Dolia, Zip, Helen).
   4. **`backend/preprocess.py`:** Thêm ánh xạ tên quốc tế `'machao': 'tamyn'` để tương thích dữ liệu giải đấu chuyển giao từ Vương Giả Vinh Diệu.
+
+### 9.6. Cập nhật cặp tướng mới: Flowborn AD & Flowborn AP
+* **Thông tin 2 tướng:**
+  1. **Flowborn AD:**
+     - Keyword: `flowbornad`
+     - Ảnh đại diện: `frontend/public/assets/heroes/flowbornad.jpg`
+     - Vai trò (Roles): `["Xạ thủ"]`
+     - Vị trí đường (Lane): `AD (Đường Rồng)`
+     - Phong cách: **Cấu rỉa (Poke)**
+     - Meta Stats: S-Tier (Pick Rate: 32.5%, Ban Rate: 18.0%, Win Rate: 53.0%, Meta Score: 84.75)
+     - Khắc chế: Khắc chế các tướng tanker chậm chạp (Toro, Thane, Arthur); bị khắc chế bởi sát thủ áp sát nhanh (Tamyn, Nakroth, Aoi).
+     - Phối hợp: Combo cực mạnh cùng SP bảo kê (TeeMee, Thane, Aya, Baldum).
+  2. **Flowborn AP:**
+     - Keyword: `flowbornap`
+     - Ảnh đại diện: `frontend/public/assets/heroes/flowbornap.jpg`
+     - Vai trò (Roles): `["Pháp sư"]`
+     - Vị trí đường (Lane): `Mid (Đường Giữa)`
+     - Phong cách: **Cấu rỉa (Poke)**
+     - Meta Stats: S-Tier (Pick Rate: 31.0%, Ban Rate: 20.5%, Win Rate: 53.5%, Meta Score: 86.25)
+     - Khắc chế: Khắc chế các tướng đội hình tụ cụm / pháp sư cơ động thấp (Maloch, Krixi, Natalya); bị khắc chế bởi sát thủ dồn sát thương phép/vật lý.
+     - Phối hợp: Combo quét giao tranh cực tốt khi đi cùng SP có khống chế diện rộng (Baldum, Grakk, Maloch, Cresht).
+* **Đồng bộ hệ thống dữ liệu:**
+  - Nâng tổng số tướng trong `heroes.json` (cả Frontend & Backend) lên **129 tướng**.
+  - Tích hợp đầy đủ vào `meta_priority.json` và `knowledge_base.json`.

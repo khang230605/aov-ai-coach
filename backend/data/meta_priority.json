@@ -526,5 +526,17 @@
     "ban_rate": 26.0,
     "win_rate": 54.2,
     "meta_score": 89.6
+  },
+  "Flowborn AD": {
+    "pick_rate": 32.5,
+    "ban_rate": 18.0,
+    "win_rate": 53.0,
+    "meta_score": 84.75
+  },
+  "Flowborn AP": {
+    "pick_rate": 31.0,
+    "ban_rate": 20.5,
+    "win_rate": 53.5,
+    "meta_score": 86.25
   }
 }

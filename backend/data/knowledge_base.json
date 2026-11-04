@@ -259,6 +259,14 @@
         "Tamyn": {
             "winrate": 54.2,
             "picks": 18
+        },
+        "Flowborn AD": {
+            "winrate": 53.0,
+            "picks": 16
+        },
+        "Flowborn AP": {
+            "winrate": 53.5,
+            "picks": 15
         }
     },
     "best_synergies": {
@@ -6562,6 +6570,42 @@
                 "winrate": 58.5,
                 "matches": 7
             }
+        },
+        "Flowborn AD": {
+            "TeeMee": {
+                "winrate": 63.5,
+                "matches": 8
+            },
+            "Thane": {
+                "winrate": 60.0,
+                "matches": 9
+            },
+            "Aya": {
+                "winrate": 62.0,
+                "matches": 7
+            },
+            "Baldum": {
+                "winrate": 58.5,
+                "matches": 6
+            }
+        },
+        "Flowborn AP": {
+            "Baldum": {
+                "winrate": 64.0,
+                "matches": 8
+            },
+            "Grakk": {
+                "winrate": 61.0,
+                "matches": 7
+            },
+            "Maloch": {
+                "winrate": 62.5,
+                "matches": 9
+            },
+            "Cresht": {
+                "winrate": 59.5,
+                "matches": 6
+            }
         }
     },
     "best_counters": {
@@ -7093,6 +7137,14 @@
             "Ignis": {
                 "winrate": 60.0,
                 "matches": 5
+            },
+            "Flowborn AD": {
+                "winrate": 59.0,
+                "matches": 6
+            },
+            "Flowborn AP": {
+                "winrate": 58.0,
+                "matches": 6
             }
         },
         "Heino": {},
@@ -9596,6 +9648,14 @@
             "Maloch": {
                 "winrate": 66.67,
                 "matches": 3
+            },
+            "Flowborn AD": {
+                "winrate": 59.0,
+                "matches": 6
+            },
+            "Flowborn AP": {
+                "winrate": 58.0,
+                "matches": 6
             }
         },
         "Gildur": {
@@ -9802,6 +9862,14 @@
             "Hayate": {
                 "winrate": 100.0,
                 "matches": 3
+            },
+            "Flowborn AD": {
+                "winrate": 59.0,
+                "matches": 6
+            },
+            "Flowborn AP": {
+                "winrate": 58.0,
+                "matches": 6
             }
         },
         "Azzen'Ka": {},
@@ -9868,6 +9936,42 @@
             "Tel'Annas": {
                 "winrate": 65.0,
                 "matches": 5
+            },
+            "Flowborn AD": {
+                "winrate": 59.0,
+                "matches": 6
+            },
+            "Flowborn AP": {
+                "winrate": 58.0,
+                "matches": 6
+            }
+        },
+        "Flowborn AD": {
+            "Toro": {
+                "winrate": 60.0,
+                "matches": 6
+            },
+            "Thane": {
+                "winrate": 58.5,
+                "matches": 7
+            },
+            "Arthur": {
+                "winrate": 62.0,
+                "matches": 5
+            }
+        },
+        "Flowborn AP": {
+            "Maloch": {
+                "winrate": 61.5,
+                "matches": 7
+            },
+            "Krixi": {
+                "winrate": 58.0,
+                "matches": 8
+            },
+            "Natalya": {
+                "winrate": 60.0,
+                "matches": 6
             }
         }
     }
